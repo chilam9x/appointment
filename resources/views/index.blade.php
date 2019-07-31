@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- Appointment-->
-<div id="appointment" class="container-fluid">
+<div id="appointment" class="">
     <h2 class="text-center">REQUEST AN APPOINTMENT</h2>
     <div class="container">
         <div class="row">
@@ -116,7 +116,7 @@
     </div>
 </div>
 <!--cancel appointment-->
-<div id="cancel_appointment" class="container-fluid  bg-grey">
+<div id="cancel_appointment" class=" bg-grey">
     <h2 class="text-center">CANCEL APPOINTMENT</h2>
     <div class="container">
         <div class="row">
