@@ -99,6 +99,10 @@
                                     appointment</label>
                             </div>
                         </div>
+                        <div class="col-sm-12">
+                           
+                            <div id='calendar'></div>
+                        </div>
                     </div>
                 </div>
                 <div class="panel-footer text-center">
@@ -150,6 +154,12 @@
                             <div class="form-group">
                                 <label for="focusedInput">* Phone Number (optional): </label>
                                 <input class="form-control" id="last_name" type="text">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="focusedInput">* Reason: </label>
+                                <input class="form-control" id="reason" type="text">
                             </div>
                         </div>
                     </div>
@@ -245,4 +255,27 @@
         </div>
     </div>
 </div>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js'></script>
+    <script>
+        $(document).ready(function() {
+            // page is now ready, initialize the calendar...
+            $('#calendar').fullCalendar({
+                // put your options and callbacks here
+                defaultView: 'agendaWeek',
+                events : [
+                        @foreach($appointments as $appointment)
+                    {
+                        title : '{{ $appointment->client->first_name . ' ' . $appointment->client->last_name }}',
+                        start : '{{ $appointment->start_time }}',
+                        @if ($appointment->finish_time)
+                                end: '{{ $appointment->finish_time }}',
+                        @endif
+                        url : '{{ route('admin.appointments.edit', $appointment->id) }}'
+                    },
+                    @endforeach
+                ]
+            })
+        });
+    </script>
 @endsection
