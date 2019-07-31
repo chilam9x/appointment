@@ -256,10 +256,10 @@
         </div>
     </nav>
 
-    <div class="jumbotron text-center">
+    <div class=" jumbotron text-center">
         <h1>ISSC is</h1>
         <p>here for you</p>
-        <form>
+        <form class="container">
             <div class="input-group">
                 <input type="email" class="form-control" size="50" placeholder="Email Address" required>
                 <div class="input-group-btn">
