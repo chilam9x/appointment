@@ -1,7 +1,8 @@
 <?php
 Route::get('/', 'IndexController@index');
 Route::get('cancel-appointment', 'IndexController@cancelAppointment');
-Route::get('/contact-us', 'IndexController@contactUs');
+Route::get('contact-us', 'ContactUsController@contactUs');
+Route::post('contact-us', 'ContactUsController@postContactUs');
 
 // Authentication Routes...
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('auth.login');
@@ -35,5 +36,6 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::post('appointments_mass_destroy', ['uses' => 'Admin\AppointmentsController@massDestroy', 'as' => 'appointments.mass_destroy']);
 	Route::resource('services', 'Admin\ServicesController');
 	Route::post('services_mass_destroy', ['uses' => 'Admin\ServicesController@massDestroy', 'as' => 'services.mass_destroy']);
-	
+    
+    Route::get('get-contact-us', 'ContactUsController@getContactUs');
 });

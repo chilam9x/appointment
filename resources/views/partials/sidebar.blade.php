@@ -56,6 +56,14 @@
                 </a>
             </li>
             @endcan
+            @can('appointment_access')
+            <li class="{{ $request->segment(2) == '/admin/get-contact-us' ? 'active' : '' }}">
+                <a href="{{url('admin/get-contact-us')}}">
+                <i class="fa fa-comments"></i>
+                    <span class="title">Contact Us</span>
+                </a>
+            </li>
+            @endcan
 
 
             @can('user_management_access')

@@ -13,21 +13,39 @@
                 <p><span class="glyphicon glyphicon-envelope"></span> myemail@something.com</p>
             </div>
             <div class="col-sm-7 ">
-                <div class="row">
-                    <div class="col-sm-6 form-group">
-                        <input class="form-control" id="name" name="name" placeholder="Name" type="text" required>
+                @if (Session::has('fail'))
+                <span class="bg-danger"> {{ Session::get('fail') }}</span>
+                @endif
+                @if (Session::has('success'))
+                <span class="bg-success"> {{ Session::get('success') }}</span>
+                @endif
+                <form method="POST" action="{{ url('contact-us') }}" id='formContactUs'>
+                    <input type="hidden" name="_token" value="{{csrf_token()}}">
+                    <div class="row">
+                        <div class="col-sm-6 form-group">
+                            <input class="form-control" id="first_name" name="first_name" placeholder="First Name"
+                                type="text" required>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <input class="form-control" id="last_name" name="last_name" placeholder="Last Name"
+                                type="text" required>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <input class="form-control" id="email" name="email" placeholder="Email" type="email"
+                                required>
+                        </div>
+                        <div class="col-sm-6 form-group">
+                            <input class="form-control" id="phone" name="phone" placeholder="Phone" type="tel" required>
+                        </div>
                     </div>
-                    <div class="col-sm-6 form-group">
-                        <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
+                    <textarea class="form-control" id="comments" name="comment" placeholder="Comment"
+                        rows="5"></textarea><br>
+                    <div class="row">
+                        <div class="col-sm-12 form-group form-contact">
+                            <button class="btn btn-lg pull-right" type="submit">Send</button>
+                        </div>
                     </div>
-                </div>
-                <textarea class="form-control" id="comments" name="comments" placeholder="Comment"
-                    rows="5"></textarea><br>
-                <div class="row">
-                    <div class="col-sm-12 form-group form-contact">
-                        <button class="btn btn-lg pull-right" type="submit">Send</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

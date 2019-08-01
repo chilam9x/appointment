@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
-use Illuminate\Http\Request;
+use App\ContactUs;
 use App\Appointment;
+use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
@@ -19,8 +19,5 @@ class IndexController extends Controller
     {
         return view('cancel-appointment');
     }
-    public function contactUs()
-    {
-        return view('contact-us');
-    }
+
 }
