@@ -1,5 +1,7 @@
 <?php
 Route::get('/', 'IndexController@index');
+Route::get('cancel-appointment', 'IndexController@cancelAppointment');
+Route::get('/contact-us', 'IndexController@contactUs');
 
 // Authentication Routes...
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('auth.login');

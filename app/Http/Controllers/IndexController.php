@@ -15,4 +15,12 @@ class IndexController extends Controller
         return view('index', compact('appointments'));
     }
 
+    public function cancelAppointment()
+    {
+        return view('cancel-appointment');
+    }
+    public function contactUs()
+    {
+        return view('contact-us');
+    }
 }

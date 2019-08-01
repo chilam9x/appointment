@@ -190,6 +190,10 @@
         visibility: visible;
     }
 
+    .panel-footer {
+        border-left: 1px solid #f4511e;
+    }
+
     @keyframes slide {
         0% {
             opacity: 0;
@@ -248,9 +252,9 @@
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#appointment">APPOINTMENT</a></li>
-                    <li><a href="#cancel_appointment">CANCEL APPOINTMENT</a></li>
-                    <li><a href="#contact_us">CONTACT US</a></li>
+                    <li><a href="{{url('/')}}">APPOINTMENT</a></li>
+                    <li><a href="cancel-appointment">CANCEL APPOINTMENT</a></li>
+                    <li><a href="contact-us">CONTACT US</a></li>
                 </ul>
             </div>
         </div>
@@ -259,14 +263,6 @@
     <div class=" jumbotron text-center">
         <h1>ISSC is</h1>
         <p>here for you</p>
-        <form class="container">
-            <div class="input-group">
-                <input type="email" class="form-control" size="50" placeholder="Email Address" required>
-                <div class="input-group-btn">
-                    <button type="button" class="btn btn-danger">Subscribe</button>
-                </div>
-            </div>
-        </form>
     </div>
     @yield('content')
     <footer class="container-fluid text-center bg-grey">
