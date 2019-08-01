@@ -113,7 +113,11 @@
         background-color: #fff !important;
         color: #f4511e;
     }
-
+    .form-contact .btn:hover {
+        border: 1px solid #f4511e;
+        background-color: #fff !important;
+        color: #f4511e;
+    }
     .panel-heading {
         color: #fff !important;
         background-color: #f4511e !important;
@@ -139,6 +143,12 @@
     }
 
     .panel-footer .btn {
+        margin: 15px 0;
+        background-color: #f4511e;
+        color: #fff;
+    }
+
+    .form-contact .btn {
         margin: 15px 0;
         background-color: #f4511e;
         color: #fff;
@@ -252,9 +262,9 @@
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{{url('/')}}">APPOINTMENT</a></li>
-                    <li><a href="cancel-appointment">CANCEL APPOINTMENT</a></li>
-                    <li><a href="contact-us">CONTACT US</a></li>
+                    <li class="{{ Request::path() == '/' ? 'active' : '' }}"><a href="{{url('/')}}">APPOINTMENT</a></li>
+                    <li class="{{ Request::path() == 'cancel-appointment' ? 'active' : '' }}"><a href="cancel-appointment">CANCEL APPOINTMENT</a></li>
+                    <li class="{{ Request::path() == 'contact-us' ? 'active' : '' }}"><a href="contact-us">CONTACT US</a></li>
                 </ul>
             </div>
         </div>
