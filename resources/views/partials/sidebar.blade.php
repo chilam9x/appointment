@@ -47,7 +47,6 @@
                 </a>
             </li>
             @endcan			
-            
             @can('appointment_access')
             <li class="{{ $request->segment(2) == 'appointments' ? 'active' : '' }}">
                 <a href="{{ route('admin.appointments.index') }}">
@@ -57,10 +56,18 @@
             </li>
             @endcan
             @can('appointment_access')
-            <li class="{{ $request->segment(2) == '/admin/get-contact-us' ? 'active' : '' }}">
-                <a href="{{url('admin/get-contact-us')}}">
+            <li class="{{ $request->segment(2) == '/admin/contact-us' ? 'active' : '' }}">
+                <a href="{{url('admin/contact-us')}}">
                 <i class="fa fa-comments"></i>
                     <span class="title">Contact Us</span>
+                </a>
+            </li>
+            @endcan
+            @can('appointment_access')
+            <li class="{{ $request->segment(2) == '/admin/advisor' ? 'active' : '' }}">
+                <a href="{{url('admin/advisor')}}">
+                <i class="fa fa-comments"></i>
+                    <span class="title">Advisor</span>
                 </a>
             </li>
             @endcan

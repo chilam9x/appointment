@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\ContactUs;
 use Illuminate\Http\Request;
@@ -15,6 +15,10 @@ class ContactUsController extends Controller
     }
     public function getContactUs()
     {
+        if (! Gate::allows('role_access')) {
+            return abort(401);
+        }
+        dd(1);
         $contact=ContactUs::getContactUs();
         return view('admin.contact_us.index',['contact'=>$contact]);
     }

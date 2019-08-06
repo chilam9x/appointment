@@ -35,7 +35,8 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::resource('appointments', 'Admin\AppointmentsController');
     Route::post('appointments_mass_destroy', ['uses' => 'Admin\AppointmentsController@massDestroy', 'as' => 'appointments.mass_destroy']);
 	Route::resource('services', 'Admin\ServicesController');
-	Route::post('services_mass_destroy', ['uses' => 'Admin\ServicesController@massDestroy', 'as' => 'services.mass_destroy']);
+    Route::post('services_mass_destroy', ['uses' => 'Admin\ServicesController@massDestroy', 'as' => 'services.mass_destroy']);
     
-    Route::get('get-contact-us', 'ContactUsController@getContactUs');
+    Route::get('advisor', 'Admin\AdvisorController@index');
+    Route::get('contact-us', 'Admin\ContactUsController@getContactUs');
 });
