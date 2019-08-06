@@ -56,7 +56,7 @@
             </li>
             @endcan
             @can('appointment_access')
-            <li class="{{ $request->segment(2) == '/admin/contact-us' ? 'active' : '' }}">
+            <li class="{{ $request->segment(2) == 'contact-us' ? 'active' : '' }}">
                 <a href="{{url('admin/contact-us')}}">
                 <i class="fa fa-comments"></i>
                     <span class="title">Contact Us</span>
@@ -64,7 +64,7 @@
             </li>
             @endcan
             @can('appointment_access')
-            <li class="{{ $request->segment(2) == '/admin/advisor' ? 'active' : '' }}">
+            <li class="{{ $request->segment(2) == 'advisor' ? 'active' : '' }}">
                 <a href="{{url('admin/advisor')}}">
                 <i class="fa fa-comments"></i>
                     <span class="title">Advisor</span>

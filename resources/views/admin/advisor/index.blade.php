@@ -17,9 +17,6 @@
                     <th style="text-align:center;"><input type="checkbox" id="select-all" /></th>
                     <th>@lang('quickadmin.clients.fields.first-name')</th>
                     <th>@lang('quickadmin.clients.fields.last-name')</th>
-                    <th>@lang('quickadmin.clients.fields.phone')</th>
-                    <th>@lang('quickadmin.clients.fields.email')</th>
-                    <th>Comment</th>
                     <th>Date</th>
                 </tr>
             </thead>
@@ -31,8 +28,6 @@
                     <td></td>
                     <td>{{ $a->first_name }}</td>
                     <td>{{ $a->last_name }}</td>
-                    <td>{{ $a->phone }}</td>
-                    <td>{{ $a->email }}</td>
                     <td> {{ $a->created_at }} </td>
                 </tr>
                 @endforeach
