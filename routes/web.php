@@ -39,8 +39,9 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     
     Route::get('advisor', 'Admin\AdvisorController@index');
     Route::post('create-advisor', 'Admin\AdvisorController@postCreate');
-    Route::get('update-advisor', 'Admin\AdvisorController@update');
-    Route::post('update-advisor', 'Admin\AdvisorController@postUpdate');
-    Route::get('delete-advisor', 'Admin\AdvisorController@delete');
+
+    Route::get('category', 'Admin\CategoryController@index');
+    Route::post('create-category', 'Admin\CategoryController@postCreate');
+
     Route::get('contact-us', 'Admin\ContactUsController@getContactUs')->name('admin.contact-us');
 });

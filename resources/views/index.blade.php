@@ -2,7 +2,7 @@
 
 @section('content')
 <!-- Appointment-->
-<div id="appointment" >
+<div id="appointment">
     <h2 class="text-center">REQUEST AN APPOINTMENT</h2>
     <div class="container">
         <div class="row">
@@ -61,22 +61,22 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="focusedInput">* Category: </label>
+
                                     <select class="form-control" id="sel1">
-                                        <option>general inquiries </option>
-                                        <option>sponsored students</option>
-                                        <option>category 3</option>
-                                        <option>category 4</option>
+                                        @foreach($category as $c)
+                                        <option value="{{$c->id}}">{{$c->name}} </option>
+                                        @endforeach
                                     </select>
+
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="focusedInput">* Advisor: </label>
-                                    <select class="form-control" id="sel1">
-                                        <option>name 1 </option>
-                                        <option>name 2</option>
-                                        <option>name 3</option>
-                                        <option>name 4</option>
+                                    <select class="form-control" id="sel2">
+                                    @foreach($advisor as $a)
+                                        <option value="{{$a->id}}">{{$a->first_name}} {{$a->last_name}} </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

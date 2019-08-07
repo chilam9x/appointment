@@ -71,7 +71,14 @@
                 </a>
             </li>
             @endcan
-
+            @can('appointment_access')
+            <li class="{{ $request->segment(2) == 'category' ? 'active' : '' }}">
+                <a href="{{url('admin/category')}}">
+                <i class="fa fa-user"></i>
+                    <span class="title">Category</span>
+                </a>
+            </li>
+            @endcan
 
             @can('user_management_access')
                 <li class="">
