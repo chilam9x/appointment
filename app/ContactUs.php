@@ -10,9 +10,9 @@ class ContactUs extends Model
         $res = DB::table('contact_us')->get();
         return $res;
     }
-    public static function insert($request)
+    public static function postCreate($request)
     {
-        $res = DB::table('contact_us')->insert(
+        DB::table('contact_us')->insert(
             [
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,

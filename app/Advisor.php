@@ -10,15 +10,12 @@ class Advisor extends Model
         $res = DB::table('advisor')->get();
         return $res;
     }
-    public static function insert($request)
+    public static function postCreate($request)
     {
-        $res = DB::table('contact_us')->insert(
+        DB::table('advisor')->insert(
             [
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'comment' => $request->comment,
                 'created_at' => date('Y-m-d'),
             ]
         );

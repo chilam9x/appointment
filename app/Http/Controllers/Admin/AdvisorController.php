@@ -16,6 +16,21 @@ class AdvisorController extends Controller
         return view('admin.advisor.index',['advisor'=>$advisor]);
     }
 
+    public function postCreate(Request $request)
+    {
+        try {
+            $res = Advisor::postCreate($request);
+            if ($res == 200) {
+                return back()
+                    ->with('success','You have successfully sent us contact information');
+            } else {
+                return back()
+                    ->with('fail','You have sent us contact information failed');
+            }
+        } catch (\Exception $ex) {
+            return $ex;
+        }
+    }
 
 
 }

@@ -1,8 +1,8 @@
 <?php
 Route::get('/', 'IndexController@index');
 Route::get('cancel-appointment', 'IndexController@cancelAppointment');
-Route::get('contact-us', 'Admin\ContactUsController@contactUs')->name('contact-us');
-Route::post('contact-us', 'Admin\ContactUsController@postContactUs')->name('contact-us');
+Route::get('contact-us', 'Admin\ContactUsController@index');
+Route::post('contact-us', 'Admin\ContactUsController@postCreate')->name('contact-us');
 
 // Authentication Routes...
 $this->get('login', 'Auth\LoginController@showLoginForm')->name('auth.login');
@@ -37,6 +37,10 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
 	Route::resource('services', 'Admin\ServicesController');
     Route::post('services_mass_destroy', ['uses' => 'Admin\ServicesController@massDestroy', 'as' => 'services.mass_destroy']);
     
-    Route::get('/advisor', 'Admin\AdvisorController@index');
+    Route::get('advisor', 'Admin\AdvisorController@index');
+    Route::post('create-advisor', 'Admin\AdvisorController@postCreate');
+    Route::get('update-advisor', 'Admin\AdvisorController@update');
+    Route::post('update-advisor', 'Admin\AdvisorController@postUpdate');
+    Route::get('delete-advisor', 'Admin\AdvisorController@delete');
     Route::get('contact-us', 'Admin\ContactUsController@getContactUs')->name('admin.contact-us');
 });

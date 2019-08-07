@@ -40,6 +40,7 @@
     </nav>
 
     <div class=" jumbotron ">
+        <div class="container">
         <div id="carousel3d">
             <carousel-3d :perspective="0" :space="200" :display="5" :controls-visible="true" :controls-prev-html="'❬'"
                 :controls-next-html="'❭'" :controls-width="30" :controls-height="60" :clickable="true" :autoplay="true"
@@ -64,6 +65,7 @@
                     <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">Click Here</a>
                 </slide>
             </carousel-3d>
+        </div>
         </div>
     </div>
     @yield('content')

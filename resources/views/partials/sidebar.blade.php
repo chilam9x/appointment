@@ -66,7 +66,7 @@
             @can('appointment_access')
             <li class="{{ $request->segment(2) == 'advisor' ? 'active' : '' }}">
                 <a href="{{url('admin/advisor')}}">
-                <i class="fa fa-comments"></i>
+                <i class="fa fa-user"></i>
                     <span class="title">Advisor</span>
                 </a>
             </li>
