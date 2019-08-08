@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\ContactUs;
 use App\Category;
 use App\Advisor;
+use App\Student;
 use App\Appointment;
 use Illuminate\Http\Request;
 
@@ -39,7 +39,17 @@ class IndexController extends Controller
     }
     public function cancelAppointment()
     {
-        return view('cancel-appointment');
+        $student =null;
+        return view('cancel-appointment',compact('student'));
+    }
+    public function checkStudent(Request $request)
+    {
+        try {
+            $student = Student::checkStudent($request);
+            return view('cancel-appointment',compact('student'));
+        } catch (\Exception $ex) {
+            return $ex;
+        }
     }
 
 }

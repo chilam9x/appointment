@@ -2,7 +2,9 @@
 Route::get('/', 'IndexController@index');
 Route::get('appointment', 'IndexController@appointment');
 Route::post('appointment', 'IndexController@postAppointment');
+
 Route::get('cancel-appointment', 'IndexController@cancelAppointment');
+Route::post('check-student', 'IndexController@checkStudent');
 Route::get('contact-us', 'Admin\ContactUsController@index');
 Route::post('contact-us', 'Admin\ContactUsController@postCreate')->name('contact-us');
 
