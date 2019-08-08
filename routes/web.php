@@ -4,6 +4,7 @@ Route::get('appointment', 'IndexController@appointment');
 Route::post('appointment', 'IndexController@postAppointment');
 
 Route::get('cancel-appointment', 'IndexController@cancelAppointment');
+Route::get('cancel-appointment/{id}', 'IndexController@postCancelAppointment');
 Route::post('check-student', 'IndexController@checkStudent');
 Route::get('contact-us', 'Admin\ContactUsController@index');
 Route::post('contact-us', 'Admin\ContactUsController@postCreate')->name('contact-us');

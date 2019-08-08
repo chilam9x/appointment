@@ -5,10 +5,10 @@
 <div id="appointment">
     <h2 class="text-center">REQUEST AN APPOINTMENT</h2>
     @if (Session::has('fail'))
-    <span class="bg-danger"> {{ Session::get('fail') }}</span>
+    <span class="bg-danger text-center"> {{ Session::get('fail') }}</span>
     @endif
     @if (Session::has('success'))
-    <span class="bg-success"> {{ Session::get('success') }}</span>
+    <span class="bg-success text-center"> {{ Session::get('success') }}</span>
     @endif
     <div class="container">
         <form class="form-horizontal" action="appointment" method="POST">
@@ -17,7 +17,7 @@
                 <div class="col-sm-12 ">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h5>Student infomation</h5>
+                            <h5>Student infomation</h5> 
                         </div>
                         <div class="panel-body">
                             <div class="row">

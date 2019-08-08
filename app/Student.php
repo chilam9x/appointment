@@ -15,7 +15,8 @@ class Student extends Model
         ->join('category as c','c.id','=','a.category_id')
         ->join('advisor as as','as.id','=', 'a.advisor_id')
         ->where('asu_id', $request->asu_id)
-        ->select('s.*','a.*','c.name as category_name','as.first_name as advisor_first_name','as.last_name as advisor_last_name')
+        ->select('s.*','a.id as ap_id','a.*','c.name as category_name','as.first_name as advisor_first_name','as.last_name as advisor_last_name')
+        ->orderBy('a.id','desc')
         ->get();
         return $res;
     }

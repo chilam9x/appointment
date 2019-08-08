@@ -21,11 +21,12 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-sm-12 form-inline text-center">
-                                <form class="form-horizontal" action="check-student" method="POST">
+                                <form class="form-horizontal" action="{{url('check-student')}}" method="POST">
                                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                                     <div class="form-group">
                                         <label for="focusedInput">* ASU ID #: </label>
-                                        <input class="form-control" name="asu_id" type="text" placeholder="Enter ASU ID">
+                                        <input class="form-control" name="asu_id" type="text"
+                                            placeholder="Enter ASU ID">
                                         <button type="submit" class="btn  btn-warning">Check</button>
                                     </div>
                                 </form>
@@ -45,6 +46,7 @@
                                             <th>Time</th>
                                             <th>Phone call</th>
                                             <th>Create date</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -60,6 +62,8 @@
                                             <td>{{$s->time}}</td>
                                             <td>{{($s->phone_call==1) ? 'yes' :''}}</td>
                                             <td>{{date("d-m-Y", strtotime($s->created_at))}}</td>
+                                            <td><a href="#" data-toggle="modal" data-target="#cancel"
+                                                    onclick="openCancelModal({{$s->id}})">Cancel</a></td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -75,4 +79,28 @@
 
     </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="cancel" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cancel an appointment</h4>
+            </div>
+            <div class="modal-body">
+                <p class="text-danger"> Are you sure you will cancel ? </p>
+            </div>
+            <div class="modal-footer">
+                <a id="btnCancel" type="button" class="btn btn-danger">Save</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openCancelModal(id) {
+    document.getElementById("btnCancel").href = "cancel-appointment/" + id;
+}
+</script>
 @endsection

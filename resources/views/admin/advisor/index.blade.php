@@ -3,7 +3,7 @@
 @section('content')
 <h3 class="page-title">Advisor</h3>
 <p>
-    <button type="button" class="btn btn-success =" data-toggle="modal" data-target="#create">@lang('quickadmin.qa_add_new')</button>
+    <button type="button" class="btn btn-success " data-toggle="modal" data-target="#create">@lang('quickadmin.qa_add_new')</button>
 </p>
 <div class="panel panel-default">
     <div class="panel-heading">

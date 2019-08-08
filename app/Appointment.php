@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
@@ -22,7 +22,6 @@ class Appointment extends Model
     use SoftDeletes;
 
     protected $fillable = ['start_time', 'finish_time', 'comments', 'client_id', 'employee_id'];
-
 
     /**
      * Set to null if empty
@@ -116,45 +115,51 @@ class Appointment extends Model
     {
         return $this->belongsTo(Service::class, 'service_id')->withTrashed();
     }
+    //raymond
+    public static function getList()
+    {
+        $res = DB::table('appointments')->where('deleted_at',null)->get();
+        return $res;
+    }
     public static function postCreate($request)
     {
         $appointment_id = DB::table('appointments')->insertGetID(
             [
                 'category_id' => isset($request->category_id)
-                    && $request->category_id !== "undefined"
-                    && $request->category_id !== null ? $request->category_id : '',
+                && $request->category_id !== "undefined"
+                && $request->category_id !== null ? $request->category_id : '',
                 'advisor_id' => isset($request->advisor_id)
-                    && $request->advisor_id !== "undefined"
-                    && $request->advisor_id !== null ? $request->advisor_id : '',
+                && $request->advisor_id !== "undefined"
+                && $request->advisor_id !== null ? $request->advisor_id : '',
                 'phone_call' => isset($request->phone_call)
-                    && $request->phone_call !== "undefined"
-                    && $request->phone_call !== null ? $request->phone_call : 0,
+                && $request->phone_call !== "undefined"
+                && $request->phone_call !== null ? $request->phone_call : 0,
                 'date' => isset($request->date)
-                    && $request->date !== "undefined"
-                    && $request->date !== null ? $request->date : '',
+                && $request->date !== "undefined"
+                && $request->date !== null ? $request->date : '',
                 'time' => isset($request->time)
-                    && $request->time !== "undefined"
-                    && $request->time !== null ? $request->time : '',
+                && $request->time !== "undefined"
+                && $request->time !== null ? $request->time : '',
                 'created_at' => date('Y-m-d h:i:s'),
             ]
         );
         $student_id = DB::table('student')->insertGetID(
             [
                 'first_name' => isset($request->first_name)
-                    && $request->first_name !== "undefined"
-                    && $request->first_name !== null ? $request->first_name : '',
+                && $request->first_name !== "undefined"
+                && $request->first_name !== null ? $request->first_name : '',
                 'last_name' => isset($request->last_name)
-                    && $request->last_name !== "undefined"
-                    && $request->last_name !== null ? $request->last_name : '',
+                && $request->last_name !== "undefined"
+                && $request->last_name !== null ? $request->last_name : '',
                 'asu_id' => isset($request->asu_id)
-                    && $request->asu_id !== "undefined"
-                    && $request->asu_id !== null ? $request->asu_id : '',
+                && $request->asu_id !== "undefined"
+                && $request->asu_id !== null ? $request->asu_id : '',
                 'email' => isset($request->email)
-                    && $request->email !== "undefined"
-                    && $request->email !== null ? $request->email : '',
+                && $request->email !== "undefined"
+                && $request->email !== null ? $request->email : '',
                 'phone' => isset($request->phone)
-                    && $request->phone !== "undefined"
-                    && $request->phone !== null ? $request->phone : '',
+                && $request->phone !== "undefined"
+                && $request->phone !== null ? $request->phone : '',
                 'created_at' => date('Y-m-d h:i:s'),
             ]
         );
@@ -164,6 +169,16 @@ class Appointment extends Model
                 'appointment_id' => $appointment_id,
             ]
         );
+        return 200;
+    }
+    public static function cancel($id)
+    {
+        DB::table('appointments')
+            ->where('id', $id)
+            ->update([
+                'deleted_at' => date('Y-m-d h:i:s'),
+            ]
+            );
         return 200;
     }
 }

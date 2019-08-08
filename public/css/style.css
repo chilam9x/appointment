@@ -245,7 +245,10 @@ footer .glyphicon {
   font-size: 20px;
   font-weight: 500;
 }
-
+#cancel{
+  top: 20%;
+}
+#appointment,#cancel_appointment,#contact_us{padding: 100px 0px}
 /* end slide */
 
 .form-horizontal .form-group {
