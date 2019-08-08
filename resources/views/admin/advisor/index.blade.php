@@ -9,7 +9,6 @@
     <div class="panel-heading">
         @lang('quickadmin.qa_list')
     </div>
-
     <div class="panel-body table-responsive">
         <table class="table table-bordered table-striped {{ count($advisor) > 0 ? 'datatable' : '' }} @can('client_delete') dt-select @endcan">
             <thead>
@@ -47,6 +46,12 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Create new Advisor</h4>
+                @if (Session::has('fail'))
+                <span class="bg-danger"> {{ Session::get('fail') }}</span>
+                @endif
+                @if (Session::has('success'))
+                <span class="bg-success"> {{ Session::get('success') }}</span>
+                @endif
             </div>
             <form class="form-horizontal" action="create-advisor" method="POST">
                 <input type="hidden" name="_token" value="{{csrf_token()}}">

@@ -5,6 +5,12 @@
 <!--cancel appointment-->
 <div id="cancel_appointment">
     <h2 class="text-center">CANCEL APPOINTMENT</h2>
+    @if (Session::has('fail'))
+    <span class="bg-danger"> {{ Session::get('fail') }}</span>
+    @endif
+    @if (Session::has('success'))
+    <span class="bg-success"> {{ Session::get('success') }}</span>
+    @endif
     <div class="container">
         <div class="row">
             <div class="col-sm-12 ">
