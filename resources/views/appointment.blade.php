@@ -88,8 +88,8 @@
                                 </div>
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label class="checkbox-inline"><input type="checkbox" value="1" name="phone_call">Phone call
-                                            appointment</label>
+                                        <label for="focusedInput">* Reason: </label>
+                                        <input class="form-control" name="reason" type="text" required>
                                     </div>
                                 </div>
                             </div>
@@ -103,8 +103,16 @@
                                         <input class="form-control" name="date" type="date" value="<?php echo date('Y-m-d'); ?>" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="focusedInput">Time choose: </label>
-                                        <input class="form-control" name="time" id='time' type="time" value='now' required>
+                                        <label for="focusedInput">Start time: </label>
+                                        <input class="form-control" name="start_time"  type="time" value='now' required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="focusedInput">Finish time: </label>
+                                        <input class="form-control" name="finish_time" type="time" value='now' required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="checkbox-inline"><input type="checkbox" value="1" name="phone_call">Phone call
+                                            appointment</label>
                                     </div>
                                 </div>
                             </div>
@@ -131,7 +139,8 @@
             events: [
                 @foreach($appointments as $appointment) {
                     title: {{$appointment->phone_call}} == 1 ? "Phone call appointment" : "Make an appointment",
-                    start: moment('{{$appointment->date}}').format('YYYY-MM-DD') + ' {{$appointment->time}}',
+                    start: moment('{{$appointment->date}}').format('YYYY-MM-DD') + ' {{$appointment->start_time}}',
+                    end: moment('{{$appointment->date}}').format('YYYY-MM-DD') + ' {{$appointment->finish_time}}',
                 },
                 @endforeach
             ]

@@ -21,7 +21,7 @@ h4 {
 }
 
 .jumbotron {
-  background-color: #ccc;
+  background-color: #fff;
   color: #fff;
   padding: 100px 25px;
   font-family: Montserrat, sans-serif;
@@ -141,7 +141,7 @@ h4 {
 
 .navbar {
   margin-bottom: 0;
-  background-color: #fec627;
+  background-color: #fff;
   z-index: 9999;
   border: 0;
   font-size: 12px !important;
@@ -248,7 +248,7 @@ footer .glyphicon {
 #cancel{
   top: 20%;
 }
-#appointment,#cancel_appointment,#contact_us{padding: 100px 0px}
+#appointment,#cancel_appointment,#contact_us,#online-scheduling{padding: 60px 0px}
 /* end slide */
 
 .form-horizontal .form-group {

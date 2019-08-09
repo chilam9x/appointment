@@ -1,34 +1,58 @@
 @extends('layouts.customer')
 
 @section('content')
-
-<div class=" jumbotron ">
-    <div class="container">
-        <div id="carousel3d">
-            <carousel-3d :perspective="0" :space="200" :display="5" :controls-visible="true" :controls-prev-html="'❬'" :controls-next-html="'❭'" :controls-width="30" :controls-height="60" :clickable="true" :autoplay="true" :autoplay-timeout="5000">
-                <slide :index="0">
-                    <img src="{{ URL::asset('public/img/slider-1.jpg') }}">
-                </slide>
-                <slide :index="1">
-                    <span class="title">Web Design</span>
-                    <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">Click Here</a>
-                </slide>
-                <slide :index="2">
-                    <span class="title">You know</span>
-                    <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">Click Here</a>
-                </slide>
-                <slide :index="3">
-                    <span class="title">You know12</span>
-                    <a href="{{ URL::asset('public/img/slider-1.jpg') }}">Click Here</a>
-                </slide>
-                <slide :index="4">
-                    <span class="title">You know</span>
-                    <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">Click Here</a>
-                </slide>
-            </carousel-3d>
+<div id="online-scheduling">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 ">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h5>Online Scheduling</h5>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="text-center">
+                            <ul class="pagination text-center">
+                                <li  class="active"><a href="{{url('appointment')}}">REQUEST AN APPOINTMENT</a></li>
+                                <li><a href="cancel-appointment">CANCEL AN APPOINTMENT</a></li>
+                                <li><a href="contact-us">CONTACT US</a></li>
+                            </ul>
+                            </div>
+                            <div class=" jumbotron ">
+                                <div class="container">
+                                    <div id="carousel3d">
+                                        <carousel-3d :perspective="0" :space="200" :display="5" :controls-visible="true" :controls-prev-html="'❬'" :controls-next-html="'❭'" :controls-width="30" :controls-height="60" :clickable="true" :autoplay="true" :autoplay-timeout="5000">
+                                            <slide :index="0">
+                                                <img src="{{ URL::asset('public/img/slider-1.jpg') }}">
+                                            </slide>
+                                            <slide :index="1">
+                                                <span class="title">Web Design</span>
+                                                <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">Click Here</a>
+                                            </slide>
+                                            <slide :index="2">
+                                                <span class="title">You know</span>
+                                                <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">Click Here</a>
+                                            </slide>
+                                            <slide :index="3">
+                                                <span class="title">You know12</span>
+                                                <a href="{{ URL::asset('public/img/slider-1.jpg') }}">Click Here</a>
+                                            </slide>
+                                            <slide :index="4">
+                                                <span class="title">You know</span>
+                                                <a href="https://www.youtube.com/channel/UCXTfDJ60DBmA932Du6B1ydg">Click Here</a>
+                                            </slide>
+                                        </carousel-3d>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
 <script>
     $(document).ready(function() {
         // Add smooth scrolling to all links in navbar + footer link

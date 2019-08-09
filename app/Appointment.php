@@ -131,15 +131,21 @@ class Appointment extends Model
                 'advisor_id' => isset($request->advisor_id)
                 && $request->advisor_id !== "undefined"
                 && $request->advisor_id !== null ? $request->advisor_id : '',
+                'reason' => isset($request->reason)
+                && $request->reason !== "undefined"
+                && $request->reason !== null ? $request->reason : '',
                 'phone_call' => isset($request->phone_call)
                 && $request->phone_call !== "undefined"
                 && $request->phone_call !== null ? $request->phone_call : 0,
                 'date' => isset($request->date)
                 && $request->date !== "undefined"
                 && $request->date !== null ? $request->date : '',
-                'time' => isset($request->time)
-                && $request->time !== "undefined"
-                && $request->time !== null ? $request->time : '',
+                'start_time' => isset($request->start_time)
+                && $request->start_time !== "undefined"
+                && $request->start_time !== null ? $request->start_time : '',
+                'finish_time' => isset($request->finish_time)
+                && $request->finish_time !== "undefined"
+                && $request->finish_time !== null ? $request->finish_time : '',
                 'created_at' => date('Y-m-d h:i:s'),
             ]
         );
@@ -176,6 +182,7 @@ class Appointment extends Model
         DB::table('appointments')
             ->where('id', $id)
             ->update([
+                'reason_cancel' => date('Y-m-d h:i:s'),
                 'deleted_at' => date('Y-m-d h:i:s'),
             ]
             );
