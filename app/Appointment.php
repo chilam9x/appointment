@@ -179,6 +179,7 @@ class Appointment extends Model
     }
     public static function cancel($id)
     {
+        dd(123);
         DB::table('appointments')
             ->where('id', $id)
             ->update([

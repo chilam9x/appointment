@@ -12,41 +12,7 @@
                     <span class="title">@lang('quickadmin.qa_dashboard')</span>
                 </a>
             </li>
-            
-            @can('client_access')
-            <li class="{{ $request->segment(2) == 'clients' ? 'active' : '' }}">
-                <a href="{{ route('admin.clients.index') }}">
-                    <i class="fa fa-user"></i>
-                    <span class="title">@lang('quickadmin.clients.title')</span>
-                </a>
-            </li>
-            @endcan
-            
-            @can('employee_access')
-            <li class="{{ $request->segment(2) == 'employees' ? 'active' : '' }}">
-                <a href="{{ route('admin.employees.index') }}">
-                    <i class="fa fa-suitcase"></i>
-                    <span class="title">@lang('quickadmin.employees.title')</span>
-                </a>
-            </li>
-            @endcan
-            
-            @can('working_hour_access')
-            <li class="{{ $request->segment(2) == 'working_hours' ? 'active' : '' }}">
-                <a href="{{ route('admin.working_hours.index') }}">
-                    <i class="fa fa-hourglass"></i>
-                    <span class="title">@lang('quickadmin.working-hours.title')</span>
-                </a>
-            </li>
-            @endcan
-            @can('service_access')
-            <li class="{{ $request->segment(2) == 'services' ? 'active' : '' }}">
-                <a href="{{ route('admin.services.index') }}">
-                    <i class="fa fa-hourglass"></i>
-                    <span class="title">@lang('quickadmin.services.title')</span>
-                </a>
-            </li>
-            @endcan			
+	
             @can('appointment_access')
             <li class="{{ $request->segment(2) == 'appointments' ? 'active' : '' }}">
                 <a href="{{ route('admin.appointments.index') }}">
@@ -88,7 +54,6 @@
                         <span class="fa arrow"></span>
                     </a>
                     <ul class="sub-menu">
-
                         @can('role_access')
                             <li class="{{ $request->segment(2) == 'roles' ? 'active active-sub' : '' }}">
                                 <a href="{{ route('admin.roles.index') }}">

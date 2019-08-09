@@ -44,6 +44,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     
     Route::get('advisor', 'Admin\AdvisorController@index');
     Route::post('create-advisor', 'Admin\AdvisorController@postCreate');
+    Route::post('edit-advisor', 'Admin\AdvisorController@postEdit');
 
     Route::get('category', 'Admin\CategoryController@index');
     Route::post('create-category', 'Admin\CategoryController@postCreate');

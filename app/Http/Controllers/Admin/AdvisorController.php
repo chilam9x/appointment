@@ -22,15 +22,29 @@ class AdvisorController extends Controller
             $res = Advisor::postCreate($request);
             if ($res == 200) {
                 return back()
-                    ->with('success','You have successfully sent us contact information');
+                    ->with('success','You have successfully create advisor');
             } else {
                 return back()
-                    ->with('fail','You have sent us contact information failed');
+                    ->with('fail','You have create failed advisor');
             }
         } catch (\Exception $ex) {
             return $ex;
         }
     }
-
+    public function postEdit(Request $request)
+    {
+        try {
+            $res = Advisor::postEdit($request);
+            if ($res == 200) {
+                return back()
+                    ->with('success','You have successfully edit advisor');
+            } else {
+                return back()
+                    ->with('fail','You have edit failed advisor');
+            }
+        } catch (\Exception $ex) {
+            return $ex;
+        }
+    }
 
 }

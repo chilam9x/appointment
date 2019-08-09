@@ -48,6 +48,7 @@ class IndexController extends Controller
     {
         try {
             $student = Student::checkStudent($request);
+            $count=0;
             return view('cancel-appointment', compact('student'));
         } catch (\Exception $ex) {
             return $ex;
