@@ -43,4 +43,6 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::post('delete-category', 'Admin\CategoryController@postDelete');
 
     Route::get('contact-us', 'Admin\ContactUsController@getContactUs')->name('admin.contact-us');
+
+    Route::get('student', 'Admin\StudentController@index');
 });

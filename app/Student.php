@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\DB;
 
 class Student extends Model
 {
+    public static function getList()
+    {
+        $res = DB::table('student')->get();
+        return $res;
+    }
     public static function checkStudent($request)
     {
         $res = DB::table('student as s')
