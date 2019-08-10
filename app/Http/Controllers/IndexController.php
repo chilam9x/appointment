@@ -54,10 +54,10 @@ class IndexController extends Controller
             return $ex;
         }
     }
-    public function postCancelAppointment($id)
+    public function postCancelAppointment(Request $request)
     {
         try {
-            $res = Appointment::cancel($id);
+            $res = Appointment::cancel($request);
             if ($res == 200) {
                 $student = null;
                 return view('cancel-appointment', compact('student'));

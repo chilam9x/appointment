@@ -22,15 +22,44 @@ class CategoryController extends Controller
             $res = Category::postCreate($request);
             if ($res == 200) {
                 return back()
-                    ->with('success','You have successfully sent us contact information');
+                    ->with('success','You have successfully create category');
             } else {
                 return back()
-                    ->with('fail','You have sent us contact information failed');
+                    ->with('fail','You have create failed category');
             }
         } catch (\Exception $ex) {
             return $ex;
         }
     }
-
+    public function postEdit(Request $request)
+    {
+        try {
+            $res = Category::postEdit($request);
+            if ($res == 200) {
+                return back()
+                    ->with('success','You have successfully edit category');
+            } else {
+                return back()
+                    ->with('fail','You have edit failed category');
+            }
+        } catch (\Exception $ex) {
+            return $ex;
+        }
+    }
+    public function postDelete(Request $request)
+    {
+        try {
+            $res = Category::postDelete($request);
+            if ($res == 200) {
+                return back()
+                    ->with('success','You have successfully delete category');
+            } else {
+                return back()
+                    ->with('fail','You have delete failed category');
+            }
+        } catch (\Exception $ex) {
+            return $ex;
+        }
+    }
 
 }

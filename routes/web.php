@@ -4,7 +4,7 @@ Route::get('appointment', 'IndexController@appointment');
 Route::post('appointment', 'IndexController@postAppointment');
 
 Route::get('cancel-appointment', 'IndexController@cancelAppointment');
-Route::get('cancel-appointment/{id}', 'IndexController@postCancelAppointment');
+Route::post('cancel-appointment', 'IndexController@postCancelAppointment');
 Route::post('check-student', 'IndexController@checkStudent');
 Route::get('contact-us', 'Admin\ContactUsController@index');
 Route::post('contact-us', 'Admin\ContactUsController@postCreate')->name('contact-us');
@@ -30,24 +30,17 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::post('roles_mass_destroy', ['uses' => 'Admin\RolesController@massDestroy', 'as' => 'roles.mass_destroy']);
     Route::resource('users', 'Admin\UsersController');
     Route::post('users_mass_destroy', ['uses' => 'Admin\UsersController@massDestroy', 'as' => 'users.mass_destroy']);
-    Route::resource('clients', 'Admin\ClientsController');
-    Route::post('clients_mass_destroy', ['uses' => 'Admin\ClientsController@massDestroy', 'as' => 'clients.mass_destroy']);
-	Route::get('get-employees', 'Admin\EmployeesController@GetEmployees');
-    Route::resource('employees', 'Admin\EmployeesController');
-    Route::post('employees_mass_destroy', ['uses' => 'Admin\EmployeesController@massDestroy', 'as' => 'employees.mass_destroy']);
-    Route::resource('working_hours', 'Admin\WorkingHoursController');
-    Route::post('working_hours_mass_destroy', ['uses' => 'Admin\WorkingHoursController@massDestroy', 'as' => 'working_hours.mass_destroy']);
     Route::resource('appointments', 'Admin\AppointmentsController');
-    Route::post('appointments_mass_destroy', ['uses' => 'Admin\AppointmentsController@massDestroy', 'as' => 'appointments.mass_destroy']);
-	Route::resource('services', 'Admin\ServicesController');
-    Route::post('services_mass_destroy', ['uses' => 'Admin\ServicesController@massDestroy', 'as' => 'services.mass_destroy']);
-    
+
     Route::get('advisor', 'Admin\AdvisorController@index');
     Route::post('create-advisor', 'Admin\AdvisorController@postCreate');
     Route::post('edit-advisor', 'Admin\AdvisorController@postEdit');
+    Route::post('delete-advisor', 'Admin\AdvisorController@postDelete');
 
     Route::get('category', 'Admin\CategoryController@index');
     Route::post('create-category', 'Admin\CategoryController@postCreate');
+    Route::post('edit-category', 'Admin\CategoryController@postEdit');
+    Route::post('delete-category', 'Admin\CategoryController@postDelete');
 
     Route::get('contact-us', 'Admin\ContactUsController@getContactUs')->name('admin.contact-us');
 });

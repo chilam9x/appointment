@@ -22,7 +22,7 @@ class AppointmentsController extends Controller
             return abort(401);
         }
 
-        $appointments = Appointment::all();
+        $appointments = Appointment::getListAll();
 
         return view('admin.appointments.index', compact('appointments'));
     }

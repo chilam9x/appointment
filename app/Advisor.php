@@ -7,7 +7,7 @@ class Advisor extends Model
 {
     public static function getList()
     {
-        $res = DB::table('advisor')->get();
+        $res = DB::table('advisor')->where('deleted_at',null)->get();
         return $res;
     }
     public static function postCreate($request)
@@ -31,7 +31,18 @@ class Advisor extends Model
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'email' => $request->email,
-                'created_at' => date('Y-m-d'),
+                'updated_at' => date('Y-m-d'),
+            ]
+        );
+        return 200;
+    }
+    public static function postDelete($request)
+    {
+        DB::table('advisor')
+        ->where('id',$request->id)
+        ->update(
+            [
+                'deleted_at' => date('Y-m-d'),
             ]
         );
         return 200;

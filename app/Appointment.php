@@ -121,6 +121,18 @@ class Appointment extends Model
         $res = DB::table('appointments')->where('deleted_at',null)->get();
         return $res;
     }
+    public static function getListAll()
+    {
+        $res = DB::table('student as s')
+        ->join('student_appointment as sa','s.id','=','sa.student_id')
+        ->join('appointments as a','a.id','=','sa.appointment_id')
+        ->join('category as c','c.id','=','a.category_id')
+        ->join('advisor as as','as.id','=', 'a.advisor_id')
+        ->select('s.*','a.id as ap_id','a.reason','a.date','a.start_time','a.finish_time','a.reason_cancel','a.phone_call','a.created_at as ap_created_at','a.deleted_at as ap_deleted_at','c.name as category_name','as.first_name as advisor_first_name','as.last_name as advisor_last_name')
+        ->orderBy('a.id','desc')
+        ->get();
+        return $res;
+    }
     public static function postCreate($request)
     {
         $appointment_id = DB::table('appointments')->insertGetID(
@@ -177,13 +189,12 @@ class Appointment extends Model
         );
         return 200;
     }
-    public static function cancel($id)
+    public static function cancel($request)
     {
-        dd(123);
         DB::table('appointments')
-            ->where('id', $id)
+            ->where('id', $request->id)
             ->update([
-                'reason_cancel' => date('Y-m-d h:i:s'),
+                'reason_cancel' => $request->reason_cancel,
                 'deleted_at' => date('Y-m-d h:i:s'),
             ]
             );

@@ -2,12 +2,7 @@
 
 @section('content')
 <h3 class="page-title">@lang('quickadmin.appointments.title')</h3>
-@can('appointment_create')
-<p>
-    <a href="{{ route('admin.appointments.create') }}" class="btn btn-success">@lang('quickadmin.qa_add_new')</a>
 
-</p>
-@endcan
 
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css' />
 
@@ -27,54 +22,40 @@
                     @can('appointment_delete')
                     <th style="text-align:center;"><input type="checkbox" id="select-all" /></th>
                     @endcan
-
-                    <th>@lang('quickadmin.appointments.fields.client')</th>
-                    <th>@lang('quickadmin.clients.fields.last-name')</th>
-                    <th>@lang('quickadmin.clients.fields.phone')</th>
-                    <th>@lang('quickadmin.clients.fields.email')</th>
-                    <th>@lang('quickadmin.appointments.fields.employee')</th>
-                    <th>@lang('quickadmin.employees.fields.last-name')</th>
-                    <th>@lang('quickadmin.appointments.fields.start-time')</th>
-                    <th>@lang('quickadmin.appointments.fields.finish-time')</th>
-                    <th>@lang('quickadmin.appointments.fields.comments')</th>
-                    <th>&nbsp;</th>
+                    <th>ASU ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Reason</th>
+                    <th>Category</th>
+                    <th>Advisor</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Phone call</th>
+                    <th>Create date</th>
+                    <th  class="text-danger">Reason cancel</th>
+                    <th  class="text-danger">Delete date</th>
                 </tr>
             </thead>
 
             <tbody>
                 @if (count($appointments) > 0)
                 @foreach ($appointments as $appointment)
-                <tr data-entry-id="{{ $appointment->id }}">
-                    @can('appointment_delete')
+                <tr>
                     <td></td>
-                    @endcan
-
-                    <td>{{ $appointment->client->first_name or '' }}</td>
-                    <td>{{ isset($appointment->client) ? $appointment->client->last_name : '' }}</td>
-                    <td>{{ isset($appointment->client) ? $appointment->client->phone : '' }}</td>
-                    <td>{{ isset($appointment->client) ? $appointment->client->email : '' }}</td>
-                    <td>{{ $appointment->employee->first_name or '' }}</td>
-                    <td>{{ isset($appointment->employee) ? $appointment->employee->last_name : '' }}</td>
-                    <td>{{ $appointment->start_time }}</td>
-                    <td>{{ $appointment->finish_time }}</td>
-                    <td>{!! $appointment->comments !!}</td>
-                    <td>
-                        @can('appointment_view')
-                        <a href="{{ route('admin.appointments.show',[$appointment->id]) }}" class="btn btn-xs btn-primary">@lang('quickadmin.qa_view')</a>
-                        @endcan
-                        @can('appointment_edit')
-                        <a href="{{ route('admin.appointments.edit',[$appointment->id]) }}" class="btn btn-xs btn-info">@lang('quickadmin.qa_edit')</a>
-                        @endcan
-                        @can('appointment_delete')
-                        {!! Form::open(array(
-                        'style' => 'display: inline-block;',
-                        'method' => 'DELETE',
-                        'onsubmit' => "return confirm('".trans("quickadmin.qa_are_you_sure")."');",
-                        'route' => ['admin.appointments.destroy', $appointment->id])) !!}
-                        {!! Form::submit(trans('quickadmin.qa_delete'), array('class' => 'btn btn-xs btn-danger')) !!}
-                        {!! Form::close() !!}
-                        @endcan
-                    </td>
+                    <td>{{$appointment->asu_id}}</td>
+                    <td>{{$appointment->first_name}} {{$appointment->last_name}}</td>
+                    <td>{{$appointment->email}}</td>
+                    <td>{{$appointment->phone}}</td>
+                    <td>{{$appointment->reason}}</td>
+                    <td>{{$appointment->category_name}}</td>
+                    <td>{{$appointment->advisor_first_name}} {{$appointment->advisor_last_name}}</td>
+                    <td>{{$appointment->date}}</td>
+                    <td> Form {{$appointment->start_time}} to {{$appointment->finish_time}}</td>
+                    <td>{{($appointment->phone_call==1) ? 'yes' :''}}</td>
+                    <td>{{$appointment->ap_created_at}}</td>
+                    <td>{{$appointment->reason_cancel}}</td>
+                    <td >{{$appointment->ap_deleted_at}}</td>
                 </tr>
                 @endforeach
                 @else
@@ -89,12 +70,7 @@
 @stop
 
 @section('javascript')
-<script>
-    @can('appointment_delete')
-    window.route_mass_crud_entries_destroy = '{{ route('
-    admin.appointments.mass_destroy ') }}';
-    @endcan
-</script>
+
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js'></script>
@@ -106,14 +82,9 @@
             defaultView: 'agendaWeek',
             events: [
                 @foreach($appointments as $appointment) {
-                    title: '{{ $appointment->client->first_name . '
-                    ' . $appointment->client->last_name }}',
-                    start: '{{ $appointment->start_time }}',
-                    @if($appointment - > finish_time)
-                    end: '{{ $appointment->finish_time }}',
-                    @endif
-                    url: '{{ route('
-                    admin.appointments.edit ', $appointment->id) }}'
+                    title: {{$appointment -> phone_call}} == 1 ? "Phone call appointment" : "Make an appointment",
+                    start: moment('{{$appointment->date}}').format('YYYY-MM-DD') + ' {{$appointment->start_time}}',
+                    end: moment('{{$appointment->date}}').format('YYYY-MM-DD') + ' {{$appointment->finish_time}}',
                 },
                 @endforeach
             ]

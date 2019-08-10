@@ -77,7 +77,6 @@
                             </div>
                             @endif
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -94,22 +93,26 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Cancel an appointment</h4>
             </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="focusedInput">* Reason cancel: </label> <span id="error" class="text-danger"></span>
-                    <input class="form-control" name="reason_cancel" id="reason_cancel" type="text" required>
+            <form class="form-horizontal" action="cancel-appointment" method="POST">
+                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                <input type="hidden" name="id" id="id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="focusedInput">* Reason cancel: </label> <span id="error" class="text-danger"></span>
+                        <input class="form-control" name="reason_cancel" id="reason_cancel" type="text" required>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <a id="btnCancel" type="button" class="btn btn-danger">Save</a>
-            </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Save</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 <script>
     function openCancelModal(id) {
-        document.getElementById("btnCancel").href = "cancel-appointment/" + id;
+        $('#id').val(id);
     }
 </script>
 @endsection

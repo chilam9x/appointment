@@ -22,7 +22,8 @@
                 <tr>
                     <th style="text-align:center;"><input type="checkbox" id="select-all" /></th>
                     <th>Name</th>
-                    <th>Date</th>
+                    <th>Create date</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -31,7 +32,9 @@
                 <tr>
                     <td></td>
                     <td>{{ $c->name }}</td>
-                    <td> {{ $c->created_at }} </td>
+                    <td> {{date("d-m-Y", strtotime($c->created_at))}} </td>
+                    <td><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit" onclick="openEditModal({{$c->id}},'{{$c->name}}')">Edit</button>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete" onclick="openDeleteModal({{$c->id}},'{{$c->name}}')">Delete</button> </td>
                 </tr>
                 @endforeach
                 @else
@@ -43,7 +46,7 @@
         </table>
     </div>
 </div>
-<!-- Modal -->
+<!-- Modal create-->
 <div class="modal fade" id="create" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
@@ -55,7 +58,6 @@
             <form class="form-horizontal" action="create-category" method="POST">
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <div class="modal-body">
-
                     <div class="form-group">
                         <label class="col-sm-3">Name:</label>
                         <div class="col-sm-9">
@@ -70,6 +72,66 @@
         </div>
     </div>
 </div>
+<!-- Modal edit-->
+<div class="modal fade" id="edit" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit new Category</h4>
+            </div>
+            <form class="form-horizontal" action="edit-category" method="POST">
+                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                <input type="hidden" name="id" id="id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-sm-3"> Name:</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" name="name" id="name" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal delete-->
+<div class="modal fade" id="delete" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Delete Category</h4>
+            </div>
+            <form class="form-horizontal" action="delete-category" method="POST">
+                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                <input type="hidden" name="id" id="id_delete">
+                <div class="modal-body">
+                    <p>Do you want to delete? <span class="text-danger name_category"></span> </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function openEditModal(id, name) {
+        $('#name').val(name);
+        $('#id').val(id);
+    }
+
+    function openDeleteModal(id, name) {
+        $('#id_delete').val(id);
+        $('.name_category').html(name);
+    }
+</script>
 @stop
 
 @section('javascript')

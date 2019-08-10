@@ -46,5 +46,19 @@ class AdvisorController extends Controller
             return $ex;
         }
     }
-
+    public function postDelete(Request $request)
+    {
+        try {
+            $res = Advisor::postDelete($request);
+            if ($res == 200) {
+                return back()
+                    ->with('success','You have successfully delete advisor');
+            } else {
+                return back()
+                    ->with('fail','You have delete failed advisor');
+            }
+        } catch (\Exception $ex) {
+            return $ex;
+        }
+    }
 }
