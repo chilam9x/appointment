@@ -2,6 +2,7 @@
 
 @section('content')
 <div id="online-scheduling">
+    <h2 class="text-center">International Students and Scholars Center</h2>
     <div class="container">
         <div class="row">
             <div class="col-sm-12 ">
