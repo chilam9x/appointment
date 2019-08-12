@@ -19,11 +19,20 @@
 
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
-            <div class="col-sm-3">
-                <a class="navbar-brand" href="{{url('/')}}"><img width="150" src="{{url('public/img/logo.png')}}" /></a>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{url('/')}}"><img width="120" src="{{url('public/img/logo.png')}}" /></a>
             </div>
-            <div class="col-sm-9">
-                <h2>Internatial Student and Scholars Center</h2>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="{{url('appointment')}}">REQUEST AN APPOINTMENT</a></li>
+                    <li><a href="cancel-appointment">CANCEL AN APPOINTMENT</a></li>
+                    <li><a href="contact-us">CONTACT US</a></li>
+                </ul>
             </div>
         </div>
     </nav>

@@ -6,7 +6,9 @@
 
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css' />
 
+<div class="container">
 <div id='calendar'></div>
+</div>
 
 <br />
 
@@ -80,6 +82,25 @@
         $('#calendar').fullCalendar({
             // put your options and callbacks here
             defaultView: 'agendaWeek',
+            editable: true,
+            eventOverlap: false,
+            selectable: true,
+            selectHelper: true,
+            slotDuration : '00:15:00',
+            slotEventOverlap: false,
+            allDaySlot: false,
+
+            // Display only business hours (8am to 5pm)
+            minTime: "08:00",
+            maxTime: "17:30",
+
+            businessHours: {
+                dow: [ 1, 2, 3, 4, 5], // Monday - Thursday
+                start: '08:00', // start time (8am)
+                end: '17:30', // end time (5pm)
+            },
+
+            hiddenDays: [ 0, 6 ],  // Hide Sundays and Saturdays
             events: [
                 @foreach($appointments as $appointment) {
                     title: {{$appointment -> phone_call}} == 1 ? "Phone call appointment" : "Make an appointment",

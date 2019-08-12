@@ -2,7 +2,7 @@
 
 @section('content')
 <div id="online-scheduling">
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="col-sm-12 ">
                 <div class="panel panel-default">
@@ -11,13 +11,6 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <div class="text-center">
-                            <ul class="pagination text-center">
-                                <li  class="active"><a href="{{url('appointment')}}">REQUEST AN APPOINTMENT</a></li>
-                                <li><a href="cancel-appointment">CANCEL AN APPOINTMENT</a></li>
-                                <li><a href="contact-us">CONTACT US</a></li>
-                            </ul>
-                            </div>
                             <div class=" jumbotron ">
                                 <div class="container">
                                     <div id="carousel3d">
