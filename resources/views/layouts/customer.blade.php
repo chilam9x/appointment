@@ -29,9 +29,9 @@
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="active"><a href="{{url('appointment')}}">REQUEST AN APPOINTMENT</a></li>
-                    <li><a href="cancel-appointment">CANCEL AN APPOINTMENT</a></li>
-                    <li><a href="contact-us">CONTACT US</a></li>
+                    <li class="{{ Request::path() == 'appointment' ? 'active' : '' }}"><a href="appointment">REQUEST AN APPOINTMENT</a></li>
+                    <li class="{{ (Request::path() == 'cancel-appointment') || (Request::path() == 'check-student' ) ? 'active' : '' }}"><a href="cancel-appointment">CANCEL AN APPOINTMENT</a></li>
+                    <li class="{{ Request::path() == 'contact-us' ? 'active' : '' }}"><a href="contact-us">CONTACT US</a></li>
                 </ul>
             </div>
         </div>
