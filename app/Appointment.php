@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Mail;
+use App\Mail\SendMail;
 
 /**
  * Class Appointment
@@ -118,19 +120,19 @@ class Appointment extends Model
     //raymond
     public static function getList()
     {
-        $res = DB::table('appointments')->where('deleted_at',null)->get();
+        $res = DB::table('appointments')->where('deleted_at', null)->get();
         return $res;
     }
     public static function getListAll()
     {
         $res = DB::table('student as s')
-        ->join('student_appointment as sa','s.id','=','sa.student_id')
-        ->join('appointments as a','a.id','=','sa.appointment_id')
-        ->join('category as c','c.id','=','a.category_id')
-        ->join('advisor as as','as.id','=', 'a.advisor_id')
-        ->select('s.*','a.id as ap_id','a.reason','a.date','a.start_time','a.finish_time','a.reason_cancel','a.phone_call','a.created_at as ap_created_at','a.deleted_at as ap_deleted_at','c.name as category_name','as.first_name as advisor_first_name','as.last_name as advisor_last_name')
-        ->orderBy('a.id','desc')
-        ->get();
+            ->join('student_appointment as sa', 's.id', '=', 'sa.student_id')
+            ->join('appointments as a', 'a.id', '=', 'sa.appointment_id')
+            ->join('category as c', 'c.id', '=', 'a.category_id')
+            ->join('advisor as as', 'as.id', '=', 'a.advisor_id')
+            ->select('s.*', 'a.id as ap_id', 'a.reason', 'a.date', 'a.start_time', 'a.finish_time', 'a.reason_cancel', 'a.phone_call', 'a.created_at as ap_created_at', 'a.deleted_at as ap_deleted_at', 'c.name as category_name', 'as.first_name as advisor_first_name', 'as.last_name as advisor_last_name')
+            ->orderBy('a.id', 'desc')
+            ->get();
         return $res;
     }
     public static function postCreate($request)
@@ -138,46 +140,46 @@ class Appointment extends Model
         $appointment_id = DB::table('appointments')->insertGetID(
             [
                 'category_id' => isset($request->category_id)
-                && $request->category_id !== "undefined"
-                && $request->category_id !== null ? $request->category_id : '',
+                    && $request->category_id !== "undefined"
+                    && $request->category_id !== null ? $request->category_id : '',
                 'advisor_id' => isset($request->advisor_id)
-                && $request->advisor_id !== "undefined"
-                && $request->advisor_id !== null ? $request->advisor_id : '',
+                    && $request->advisor_id !== "undefined"
+                    && $request->advisor_id !== null ? $request->advisor_id : '',
                 'reason' => isset($request->reason)
-                && $request->reason !== "undefined"
-                && $request->reason !== null ? $request->reason : '',
+                    && $request->reason !== "undefined"
+                    && $request->reason !== null ? $request->reason : '',
                 'phone_call' => isset($request->phone_call)
-                && $request->phone_call !== "undefined"
-                && $request->phone_call !== null ? $request->phone_call : 0,
+                    && $request->phone_call !== "undefined"
+                    && $request->phone_call !== null ? $request->phone_call : 0,
                 'date' => isset($request->date)
-                && $request->date !== "undefined"
-                && $request->date !== null ? $request->date : '',
+                    && $request->date !== "undefined"
+                    && $request->date !== null ? $request->date : '',
                 'start_time' => isset($request->start_time)
-                && $request->start_time !== "undefined"
-                && $request->start_time !== null ? $request->start_time : '',
+                    && $request->start_time !== "undefined"
+                    && $request->start_time !== null ? $request->start_time : '',
                 'finish_time' => isset($request->finish_time)
-                && $request->finish_time !== "undefined"
-                && $request->finish_time !== null ? $request->finish_time : '',
+                    && $request->finish_time !== "undefined"
+                    && $request->finish_time !== null ? $request->finish_time : '',
                 'created_at' => date('Y-m-d h:i:s'),
             ]
         );
         $student_id = DB::table('student')->insertGetID(
             [
                 'first_name' => isset($request->first_name)
-                && $request->first_name !== "undefined"
-                && $request->first_name !== null ? $request->first_name : '',
+                    && $request->first_name !== "undefined"
+                    && $request->first_name !== null ? $request->first_name : '',
                 'last_name' => isset($request->last_name)
-                && $request->last_name !== "undefined"
-                && $request->last_name !== null ? $request->last_name : '',
+                    && $request->last_name !== "undefined"
+                    && $request->last_name !== null ? $request->last_name : '',
                 'asu_id' => isset($request->asu_id)
-                && $request->asu_id !== "undefined"
-                && $request->asu_id !== null ? $request->asu_id : '',
+                    && $request->asu_id !== "undefined"
+                    && $request->asu_id !== null ? $request->asu_id : '',
                 'email' => isset($request->email)
-                && $request->email !== "undefined"
-                && $request->email !== null ? $request->email : '',
+                    && $request->email !== "undefined"
+                    && $request->email !== null ? $request->email : '',
                 'phone' => isset($request->phone)
-                && $request->phone !== "undefined"
-                && $request->phone !== null ? $request->phone : '',
+                    && $request->phone !== "undefined"
+                    && $request->phone !== null ? $request->phone : '',
                 'created_at' => date('Y-m-d h:i:s'),
             ]
         );
@@ -191,13 +193,37 @@ class Appointment extends Model
     }
     public static function cancel($request)
     {
+        $email = self::findEmailCancel($request->id, $request->reason_cancel);
+        dd($email);
         DB::table('appointments')
             ->where('id', $request->id)
-            ->update([
-                'reason_cancel' => $request->reason_cancel,
-                'deleted_at' => date('Y-m-d h:i:s'),
-            ]
+            ->update(
+                [
+                    'reason_cancel' => $request->reason_cancel,
+                    'deleted_at' => date('Y-m-d h:i:s'),
+                ]
             );
         return 200;
+    }
+    public static function findEmailCancel($id, $reason)
+    {
+
+        $res = DB::table('appointments as a')
+            ->where('a.id', $id)
+            ->join('student_appointment as sa', 'a.id', '=', 'sa.appointment_id')
+            ->join('student as s', 's.id', '=', 'sa.student_id')
+            ->join('advisor as ad', 'ad.id', '=', 'a.advisor_id')
+            ->select('s.email as student_email', 'ad.email as advisor_email')
+            ->get();
+        $email = $res[0]->student_email;
+        $email2 = $res[0]->advisor_email;
+        $subject = "Cancel an appointment";
+
+        $message = $res[0]->student_email . ' ' . $reason;
+
+        Mail::to($email)->send(new SendMail($subject, $message));
+        Mail::to($email2)->send(new SendMail($subject, $message));
+
+        return $res[0];
     }
 }
