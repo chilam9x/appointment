@@ -193,8 +193,7 @@ class Appointment extends Model
     }
     public static function cancel($request)
     {
-        $email = self::findEmailCancel($request->id, $request->reason_cancel);
-        dd($email);
+        self::findEmailCancel($request->id, $request->reason_cancel);
         DB::table('appointments')
             ->where('id', $request->id)
             ->update(
@@ -218,12 +217,11 @@ class Appointment extends Model
         $email = $res[0]->student_email;
         $email2 = $res[0]->advisor_email;
         $subject = "Cancel an appointment";
-
         $message = $res[0]->student_email . ' ' . $reason;
 
         Mail::to($email)->send(new SendMail($subject, $message));
         Mail::to($email2)->send(new SendMail($subject, $message));
 
-        return $res[0];
+        return 200;
     }
 }
