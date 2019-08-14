@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Advisor;
 use App\Appointment;
+use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
@@ -21,10 +23,11 @@ class AppointmentsController extends Controller
         if (! Gate::allows('appointment_access')) {
             return abort(401);
         }
-
+        $category = Category::getList();
+        $advisor = Advisor::getList();
         $appointments = Appointment::getListAll();
 
-        return view('admin.appointments.index', compact('appointments'));
+        return view('admin.appointments.index', compact('appointments','category','advisor'));
     }
 
     /**

@@ -2,12 +2,20 @@
 
 @section('content')
 <h3 class="page-title">@lang('quickadmin.appointments.title')</h3>
-
+@if (Session::has('fail'))
+<span class="bg-danger"> {{ Session::get('fail') }}</span>
+@endif
+@if (Session::has('success'))
+<span class="bg-success"> {{ Session::get('success') }}</span>
+@endif
+<p>
+    <button type="button" class="btn btn-success =" data-toggle="modal" data-target="#create">@lang('quickadmin.qa_add_new')</button>
+</p>
 
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css' />
 
 <div class="container">
-<div id='calendar'></div>
+    <div id='calendar'></div>
 </div>
 
 <br />
@@ -35,8 +43,8 @@
                     <th>Time</th>
                     <th>Phone call</th>
                     <th>Create date</th>
-                    <th  class="text-danger">Reason cancel</th>
-                    <th  class="text-danger">Delete date</th>
+                    <th class="text-danger">Reason cancel</th>
+                    <th class="text-danger">Delete date</th>
                 </tr>
             </thead>
 
@@ -57,7 +65,7 @@
                     <td>{{($appointment->phone_call==1) ? 'yes' :''}}</td>
                     <td>{{$appointment->ap_created_at}}</td>
                     <td>{{$appointment->reason_cancel}}</td>
-                    <td >{{$appointment->ap_deleted_at}}</td>
+                    <td>{{$appointment->ap_deleted_at}}</td>
                 </tr>
                 @endforeach
                 @else
@@ -69,10 +77,78 @@
         </table>
     </div>
 </div>
+<!-- Modal create-->
+<div class="modal fade" id="create" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create new an appointment</h4>
+            </div>
+            <form  action="create-category" method="POST">
+                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                <div class="modal-body">
+                    <div >
+                        <div class="form-group">
+                            <label for="email">Category:</label>
+                            <select class="form-control" name="category_id">
+                                @foreach($category as $c)
+                                    <option value="{{$c->id}}">{{$c->name}} </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Advisor:</label>
+                            <select class="form-control" name="advisor_id">
+                                @foreach($advisor as $a)
+                                    <option value="{{$a->id}}">{{$a->first_name}} {{$a->last_name}} </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            <label for="focusedInput">Date choose: </label>
+                            <input class="form-control" name="date" type="text" id="datepicker" value="<?php echo date('Y-m-d'); ?>" required>
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="focusedInput">Start time: </label>
+                            <select class="form-control" name="start_time">
+                                    <option value="08:00:00">8:00 AM </option>
+                                    <option value="08:30:00">8:30 AM </option>
+                                    <option value="09:00:00">9:00 AM </option>
+                                    <option value="09:30:00">9:30 AM </option>
+                                    <option value="10:00:00">10:00 AM</option>
+                                    <option value="10:30:00">10:30 AM</option>
+                                    <option value="11:00:00">11:00 AM</option>
+                                    <option value="11:30:00">11:30 AM</option>
+                                    <option value="12:00:00">12:00 AM</option>
+                                    <option value="12:30:00">12:30 AM</option>
+                                    <option value="13:00:00">1:00 PM</option>
+                                    <option value="13:30:00">1:30 PM</option>
+                                    <option value="14:00:00">2:00 PM</option>
+                                    <option value="14:30:00">2:30 PM</option>
+                                    <option value="15:00:00">3:00 PM</option>
+                                    <option value="15:30:00">3:30 PM</option>
+                                    <option value="16:00:00">4:00 PM</option>
+                                    <option value="16:30:00">4:30 PM</option>
+                                    <option value="17:00:00">5:00 PM</option>
+                                    <option value="17:30:00">5:30 PM</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @stop
 
 @section('javascript')
-
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js'></script>
@@ -86,7 +162,7 @@
             eventOverlap: false,
             selectable: true,
             selectHelper: true,
-            slotDuration : '00:15:00',
+            slotDuration: '00:15:00',
             slotEventOverlap: false,
             allDaySlot: false,
 
@@ -95,21 +171,33 @@
             maxTime: "17:30",
 
             businessHours: {
-                dow: [ 1, 2, 3, 4, 5], // Monday - Thursday
+                dow: [1, 2, 3, 4, 5], // Monday - Thursday
                 start: '08:00', // start time (8am)
                 end: '17:30', // end time (5pm)
             },
 
-            hiddenDays: [ 0, 6 ],  // Hide Sundays and Saturdays
+            hiddenDays: [0, 6], // Hide Sundays and Saturdays
             events: [
                 @foreach($appointments as $appointment) {
                     title: {{$appointment -> phone_call}} == 1 ? "Phone call appointment" : "Make an appointment",
                     start: moment('{{$appointment->date}}').format('YYYY-MM-DD') + ' {{$appointment->start_time}}',
-                    end: moment('{{$appointment->date}}').format('YYYY-MM-DD') + ' {{$appointment->finish_time}}',
+                    end: moment('{{$appointment->date}}').format('YYYY-MM-DD') + ' {{$appointment->start_time +30}}',
+
                 },
                 @endforeach
             ]
         })
+    });
+</script>
+<script>
+    $(function() {
+        $( "#datepicker" ).datepicker(
+        {
+            beforeShowDay: function(d) {
+                var day = d.getDay();
+                return [(day != 0 && day != 6)];
+            }
+        });
     });
 </script>
 @endsection
