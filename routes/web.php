@@ -1,7 +1,7 @@
 <?php
 Route::get('/', 'IndexController@index');
 Route::get('appointment', 'IndexController@appointment');
-Route::post('appointment', 'IndexController@postAppointment');
+Route::post('appointment', 'IndexController@postAddStudent');
 
 Route::get('cancel-appointment', 'IndexController@cancelAppointment');
 Route::post('cancel-appointment', 'IndexController@postCancelAppointment');
@@ -30,8 +30,11 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::post('roles_mass_destroy', ['uses' => 'Admin\RolesController@massDestroy', 'as' => 'roles.mass_destroy']);
     Route::resource('users', 'Admin\UsersController');
     Route::post('users_mass_destroy', ['uses' => 'Admin\UsersController@massDestroy', 'as' => 'users.mass_destroy']);
+    
     Route::resource('appointments', 'Admin\AppointmentsController');
-
+    Route::post('create-appointment', 'Admin\AppointmentsController@postCreate');
+    Route::post('create-appointment', 'Admin\AppointmentsController@postCreate');
+    
     Route::get('advisor', 'Admin\AdvisorController@index');
     Route::post('create-advisor', 'Admin\AdvisorController@postCreate');
     Route::post('edit-advisor', 'Admin\AdvisorController@postEdit');

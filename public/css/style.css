@@ -255,6 +255,11 @@ footer .glyphicon {
   margin-right: 0px !important;
   margin-left: 0px !important;
 }
+.ui-widget-header{
+      border: 0px!important;
+    background:none!important;
+    color: #fec627!important;
+}
 @keyframes slide {
   0% {
     opacity: 0;
@@ -289,10 +294,17 @@ footer .glyphicon {
     width: 100%;
     margin-bottom: 35px;
   }
+  .ui-widget-content{
+    width: 95%!important;
+  }
 }
 
 @media screen and (max-width: 480px) {
   .logo {
     font-size: 150px;
   }
+  .ui-widget-content{
+    width: 95%!important;
+  }
+
 }

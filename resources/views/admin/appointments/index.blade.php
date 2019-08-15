@@ -86,7 +86,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Create new an appointment</h4>
             </div>
-            <form  action="create-category" method="POST">
+            <form  action="create-appointment" method="POST">
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <div class="modal-body">
                     <div >
@@ -115,26 +115,26 @@
                         <div class="col-sm-6">
                             <label for="focusedInput">Start time: </label>
                             <select class="form-control" name="start_time">
-                                    <option value="08:00:00">8:00 AM </option>
-                                    <option value="08:30:00">8:30 AM </option>
-                                    <option value="09:00:00">9:00 AM </option>
-                                    <option value="09:30:00">9:30 AM </option>
-                                    <option value="10:00:00">10:00 AM</option>
-                                    <option value="10:30:00">10:30 AM</option>
-                                    <option value="11:00:00">11:00 AM</option>
-                                    <option value="11:30:00">11:30 AM</option>
-                                    <option value="12:00:00">12:00 AM</option>
-                                    <option value="12:30:00">12:30 AM</option>
-                                    <option value="13:00:00">1:00 PM</option>
-                                    <option value="13:30:00">1:30 PM</option>
-                                    <option value="14:00:00">2:00 PM</option>
-                                    <option value="14:30:00">2:30 PM</option>
-                                    <option value="15:00:00">3:00 PM</option>
-                                    <option value="15:30:00">3:30 PM</option>
-                                    <option value="16:00:00">4:00 PM</option>
-                                    <option value="16:30:00">4:30 PM</option>
-                                    <option value="17:00:00">5:00 PM</option>
-                                    <option value="17:30:00">5:30 PM</option>
+                                    <option value="08:00">8:00 AM </option>
+                                    <option value="08:30">8:30 AM </option>
+                                    <option value="09:00">9:00 AM </option>
+                                    <option value="09:30">9:30 AM </option>
+                                    <option value="10:00">10:00 AM</option>
+                                    <option value="10:30">10:30 AM</option>
+                                    <option value="11:00">11:00 AM</option>
+                                    <option value="11:30">11:30 AM</option>
+                                    <option value="12:00">12:00 AM</option>
+                                    <option value="12:30">12:30 AM</option>
+                                    <option value="13:00">1:00 PM</option>
+                                    <option value="13:30">1:30 PM</option>
+                                    <option value="14:00">2:00 PM</option>
+                                    <option value="14:30">2:30 PM</option>
+                                    <option value="15:00">3:00 PM</option>
+                                    <option value="15:30">3:30 PM</option>
+                                    <option value="16:00">4:00 PM</option>
+                                    <option value="16:30">4:30 PM</option>
+                                    <option value="17:00">5:00 PM</option>
+                                    <option value="17:30">5:30 PM</option>
                             </select>
                         </div>
                     </div>
@@ -178,14 +178,15 @@
 
             hiddenDays: [0, 6], // Hide Sundays and Saturdays
             events: [
-                @foreach($appointments as $appointment) {
-                    title: {{$appointment -> phone_call}} == 1 ? "Phone call appointment" : "Make an appointment",
-                    start: moment('{{$appointment->date}}').format('YYYY-MM-DD') + ' {{$appointment->start_time}}',
-                    end: moment('{{$appointment->date}}').format('YYYY-MM-DD') + ' {{$appointment->start_time +30}}',
-
+                @foreach($apm as $a) {
+                    title:  "Make an appointment",
+                    start: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->start_time}}',
+                    end: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->finish_time }}',
+                    color:  '{{$a->deleted_at}}' == '' ? ('{{$a->reason}}' == ''?"#fec627" :'#45B6AF'  ) :"#ccc",
                 },
                 @endforeach
             ]
+            
         })
     });
 </script>
