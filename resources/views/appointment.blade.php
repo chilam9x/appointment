@@ -172,6 +172,7 @@
                             $("#reason").css("display", "inline");
                             $("#phone_call").css("display", " inline-table");
                             $("#reason_cancel").val('');
+                            $("#form_reason_cancel").css("display", "none");
                         }
                         
                     });
