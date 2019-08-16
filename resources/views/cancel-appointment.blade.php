@@ -99,7 +99,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="focusedInput">* Reason cancel: </label> <span id="error" class="text-danger"></span>
-                        <input class="form-control" name="reason_cancel" id="reason_cancel" type="text" required>
+                        <textarea class="form-control" id="reason_cancel" name="reason_cancel" type="text" rows="5" required></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

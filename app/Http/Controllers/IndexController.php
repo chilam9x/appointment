@@ -19,7 +19,9 @@ class IndexController extends Controller
     public function appointment()
     {
         $appointments = Appointment::getList();
-        return view('appointment', compact('appointments'));
+        $category = Category::getList();
+        $advisor = Advisor::getList();
+        return view('appointment', compact('appointments', 'category', 'advisor'));
     }
     public function postAddStudent(Request $request)
     {

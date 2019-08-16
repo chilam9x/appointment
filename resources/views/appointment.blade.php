@@ -23,6 +23,32 @@
                         <h5>Appointment infomation</h5>
                     </div>
                     <div class="panel-body">
+                        <form class="form-inline" action="cancel-appointment" method="POST">
+                            <input type="hidden" name="_token" value="{{csrf_token()}}">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="email">Category:</label>
+                                    <select class="form-control" name="category_id">
+                                        @foreach($category as $c)
+                                        <option value="{{$c->id}}">{{$c->name}} </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="email">Advisor:</label>
+                                    <select class="form-control" name="advisor_id">
+                                        @foreach($advisor as $a)
+                                        <option value="{{$a->id}}">{{$a->first_name}} {{$a->last_name}} </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <button type="submit" class="btn btn-danger">Search</button>
+                            </div>
+                        </form>
                         <div class="col-sm-12">
                             <div id='calendar'></div>
                         </div>
@@ -30,78 +56,80 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <div id="eventContent" title="Event Details" style="display:none;">
-        <strong> Start: </strong> <span id="startTime"></span> ,
-        <strong> End: </strong><span id="endTime"></span><br>
-        <form class="form-horizontal" action="appointment" method="POST">
-            <input type="hidden" name="_token" value="{{csrf_token()}}">
-            <input type="hidden" id="id" name="id" value="">
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <h5>Advisor:</h5>
-                    <input class="form-control" id="advisor_id" type="text" disabled>
+        <div id="eventContent" title="Event Details" style="display:none;">
+            <strong> Start: </strong> <span id="startTime"></span> ,
+            <strong> End: </strong><span id="endTime"></span><br>
+            <form class="form-horizontal" action="appointment" method="POST">
+                <input type="hidden" name="_token" value="{{csrf_token()}}">
+                <input type="hidden" id="id" name="id" value="">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <h5>Advisor:</h5>
+                        <input class="form-control" id="advisor_id" type="text" disabled>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <h5>Category:</h5>
-                    <input class="form-control" id="category_id" type="text" disabled>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <h5>Category:</h5>
+                        <input class="form-control" id="category_id" type="text" disabled>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-6" id="first_name">
-                <div class="form-group">
-                    <h5>* First Name: </h5>
-                    <input class="form-control"  name="first_name" type="text" required>
+                <div class="col-sm-6" id="first_name">
+                    <div class="form-group">
+                        <h5>* First Name: </h5>
+                        <input class="form-control" name="first_name" type="text" required>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-6" id="last_name">
-                <div class="form-group">
-                    <h5>* Last Name: </h5>
-                    <input class="form-control" name="last_name" type="text" required>
+                <div class="col-sm-6" id="last_name">
+                    <div class="form-group">
+                        <h5>* Last Name: </h5>
+                        <input class="form-control" name="last_name" type="text" required>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-6" id="asu_id">
-                <div class="form-group">
-                    <h5>* ASU ID #: </h5>
-                    <input class="form-control" name="asu_id" type="number" required>
+                <div class="col-sm-6" id="asu_id">
+                    <div class="form-group">
+                        <h5>* ASU ID #: </h5>
+                        <input class="form-control" name="asu_id" type="number" required>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-6" id="email">
-                <div class="form-group">
-                    <h5>* Email Address: </h5>
-                    <input class="form-control" name="email" type="email" required>
+                <div class="col-sm-6" id="email">
+                    <div class="form-group">
+                        <h5>* Email Address: </h5>
+                        <input class="form-control" name="email" type="email" required>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-6" id="phone">
-                <div class="form-group">
-                    <h5>* Phone Number (optional): </h5>
-                    <input class="form-control" name="phone" type="tel" required>
+                <div class="col-sm-6" id="phone">
+                    <div class="form-group">
+                        <h5>* Phone Number (optional): </h5>
+                        <input class="form-control" name="phone" type="tel" required>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-6" id="reason">
-                <div class="form-group">
-                    <h5>* Reason: </h5>
-                    <textarea class="form-control"  name="reason" type="text" required></textarea>
+                <div class="col-sm-6" id="reason">
+                    <div class="form-group">
+                        <h5>* Reason: </h5>
+                        <textarea class="form-control" name="reason" type="text" required rows="5"></textarea>
+                    </div>
                 </div>
-            </div>
-            <div class="col-sm-12" id="form_reason_cancel" style="display: none;">
-                <div class="form-group">
-                    <h5>* Reason cancel: </h5>
-                    <textarea class="form-control" id="reason_cancel" name="reason_cancel" type="text" required></textarea>
+                <div class="col-sm-12" id="form_reason_cancel" style="display: none;">
+                    <div class="form-group">
+                        <h5>* Reason cancel: </h5>
+                        <textarea class="form-control" id="reason_cancel" name="reason_cancel" type="text" rows="5"
+                            required></textarea>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <label class="checkbox-inline"  id="phone_call"><input type="checkbox" value="1" name="phone_call">Phone call
-                    appointment</label>
-                <button type="submit" class="btn btn-danger" id="btnSave">Save</button>
-            </div>
-        </form>
-    </div>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js'></script>
-    <script>
+                <div class="modal-footer">
+                    <label class="checkbox-inline" id="phone_call"><input type="checkbox" value="1"
+                            name="phone_call">Phone
+                        call
+                        appointment</label>
+                    <button type="submit" class="btn btn-danger" id="btnSave">Save</button>
+                </div>
+            </form>
+        </div>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js'></script>
+        <script>
         $(document).ready(function() {
             // page is now ready, initialize the calendar...
             $('#calendar').fullCalendar({
@@ -127,7 +155,8 @@
                         title: "Make an appointment",
                         start: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->start_time}}',
                         end: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->finish_time }}',
-                        color: '{{$a->deleted_at}}' == '' ? ('{{$a->reason}}' == '' ? "#fec627" : '#45B6AF') : "#ccc",
+                        color: '{{$a->deleted_at}}' == '' ? ('{{$a->reason}}' == '' ? "#fec627" :
+                            '#45B6AF') : "#ccc",
                     },
                     @endforeach
                 ],
@@ -145,8 +174,8 @@
                         $("#id").val(event.id);
                         $("#category_id").val(event.category_name);
                         $("#advisor_id").val(event.advisor_name);
-                    
-                        if (event.reason !='') {
+
+                        if (event.reason != '') {
                             $("#form_reason_cancel").css("display", "inline");
                             $("#btnSave").css("display", "none");
                             $("#first_name").css("display", "none");
@@ -158,7 +187,7 @@
                             $("#phone_call").css("display", "none");
                             $("#reason").css("display", "none");
                             $("#form_reason_cancel").css("display", "none");
-                            if(event.reason_cancel !=''){
+                            if (event.reason_cancel != '') {
                                 $("#form_reason_cancel").css("display", "inline");
                                 $("#reason_cancel").val(event.reason_cancel);
                             }
@@ -174,7 +203,7 @@
                             $("#reason_cancel").val('');
                             $("#form_reason_cancel").css("display", "none");
                         }
-                        
+
                     });
                 }
             });
@@ -192,8 +221,8 @@
                 });
             });
         });
-    </script>
-    <script>
+        </script>
+        <script>
         $(function() {
             $("#datepicker").datepicker({
                 beforeShowDay: function(d) {
@@ -202,5 +231,5 @@
                 }
             });
         });
-    </script>
-    @endsection
+        </script>
+        @endsection
