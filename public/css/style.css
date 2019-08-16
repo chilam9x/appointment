@@ -296,6 +296,7 @@ footer .glyphicon {
   }
   .ui-widget-content{
     width: 95%!important;
+    top: 15%!important;
   }
 }
 
@@ -305,6 +306,7 @@ footer .glyphicon {
   }
   .ui-widget-content{
     width: 95%!important;
+    top: 15%!important;
   }
 
 }

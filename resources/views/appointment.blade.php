@@ -37,48 +37,65 @@
         <strong> End: </strong><span id="endTime"></span><br>
         <form class="form-horizontal" action="appointment" method="POST">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
+            <input type="hidden" id="id" name="id" value="">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="focusedInput">* First Name: </label>
-                    <input class="form-control" name="first_name" type="text" required>
+                    <h5>Advisor:</h5>
+                    <input class="form-control" id="advisor_id" type="text" disabled>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="focusedInput">* Last Name: </label>
+                    <h5>Category:</h5>
+                    <input class="form-control" id="category_id" type="text" disabled>
+                </div>
+            </div>
+            <div class="col-sm-6" id="first_name">
+                <div class="form-group">
+                    <h5>* First Name: </h5>
+                    <input class="form-control"  name="first_name" type="text" required>
+                </div>
+            </div>
+            <div class="col-sm-6" id="last_name">
+                <div class="form-group">
+                    <h5>* Last Name: </h5>
                     <input class="form-control" name="last_name" type="text" required>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6" id="asu_id">
                 <div class="form-group">
-                    <label for="focusedInput">* ASU ID #: </label>
-                    <input class="form-control" name="asu_id" type="text" required>
+                    <h5>* ASU ID #: </h5>
+                    <input class="form-control" name="asu_id" type="number" required>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6" id="email">
                 <div class="form-group">
-                    <label for="focusedInput">* Reason: </label>
-                    <input class="form-control" name="reason" type="text" required>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="form-group">
-                    <label for="focusedInput">* Email Address: </label>
+                    <h5>* Email Address: </h5>
                     <input class="form-control" name="email" type="email" required>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-6" id="phone">
                 <div class="form-group">
-                    <label for="focusedInput">* Phone Number (optional): </label>
+                    <h5>* Phone Number (optional): </h5>
                     <input class="form-control" name="phone" type="tel" required>
                 </div>
-
             </div>
-            <div class="form-group"><label class="checkbox-inline"><input type="checkbox" value="1" name="phone_call">Phone call
-                    appointment</label></div>
+            <div class="col-sm-6" id="reason">
+                <div class="form-group">
+                    <h5>* Reason: </h5>
+                    <textarea class="form-control"  name="reason" type="text" required></textarea>
+                </div>
+            </div>
+            <div class="col-sm-12" id="form_reason_cancel" style="display: none;">
+                <div class="form-group">
+                    <h5>* Reason cancel: </h5>
+                    <textarea class="form-control" id="reason_cancel" name="reason_cancel" type="text" required></textarea>
+                </div>
+            </div>
             <div class="modal-footer">
-
-                <button class="btn btn-danger">Save</button>
+                <label class="checkbox-inline"  id="phone_call"><input type="checkbox" value="1" name="phone_call">Phone call
+                    appointment</label>
+                <button type="submit" class="btn btn-danger" id="btnSave">Save</button>
             </div>
         </form>
     </div>
@@ -102,6 +119,11 @@
 
                 events: [
                     @foreach($appointments as $a) {
+                        id: "{{$a->id}}",
+                        category_name: "{{$a->category_name}}",
+                        reason: "{{$a->reason}}",
+                        reason_cancel: "{{$a->reason_cancel}}",
+                        advisor_name: "{{$a->first_name}}" + " " + "{{$a->last_name}}",
                         title: "Make an appointment",
                         start: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->start_time}}',
                         end: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->finish_time }}',
@@ -115,12 +137,43 @@
                         $("#startTime").html(moment(event.start).format('MMM Do h:mm A'));
                         $("#endTime").html(moment(event.end).format('MMM Do h:mm A'));
                         $("#eventInfo").html(event.description);
-                        $("#eventLink").attr('href', event.url);
                         $("#eventContent").dialog({
                             modal: true,
                             title: event.title,
                             width: 1000
                         });
+                        $("#id").val(event.id);
+                        $("#category_id").val(event.category_name);
+                        $("#advisor_id").val(event.advisor_name);
+                    
+                        if (event.reason !='') {
+                            $("#form_reason_cancel").css("display", "inline");
+                            $("#btnSave").css("display", "none");
+                            $("#first_name").css("display", "none");
+                            $("#last_name").css("display", "none");
+                            $("#asu_id").css("display", "none");
+                            $("#email").css("display", "none");
+                            $("#phone").css("display", "none");
+                            $("#reason").css("display", "none");
+                            $("#phone_call").css("display", "none");
+                            $("#reason").css("display", "none");
+                            $("#form_reason_cancel").css("display", "none");
+                            if(event.reason_cancel !=''){
+                                $("#form_reason_cancel").css("display", "inline");
+                                $("#reason_cancel").val(event.reason_cancel);
+                            }
+                        } else {
+                            $("#btnSave").css("display", "inline");
+                            $("#first_name").css("display", "inline");
+                            $("#last_name").css("display", "inline");
+                            $("#asu_id").css("display", "inline");
+                            $("#email").css("display", "inline");
+                            $("#phone").css("display", "inline");
+                            $("#reason").css("display", "inline");
+                            $("#phone_call").css("display", " inline-table");
+                            $("#reason_cancel").val('');
+                        }
+                        
                     });
                 }
             });

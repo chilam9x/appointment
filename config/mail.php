@@ -63,7 +63,7 @@ return [
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'raymond.nguyen9x@gmail.com'),
-        'name' => env('MAIL_FROM_NAME', 'Cancel an appointment'),
+        'name' => env('MAIL_FROM_NAME', 'Appointment'),
     ],
 
     /*

@@ -25,9 +25,14 @@ class Appointment extends Model
     //raymond
     public static function getList()
     {
-        $res = DB::table('appointments')->get();
+        $res = DB::table('appointments as a')
+            ->join('category as c', 'c.id', '=', 'a.category_id')
+            ->join('advisor as as', 'as.id', '=', 'a.advisor_id')
+            ->select("a.*", "c.name as category_name", 'as.first_name as first_name', "as.last_name as last_name")
+            ->get();
         return $res;
     }
+
     public static function getListAll()
     {
         $res = DB::table('student as s')
@@ -42,17 +47,57 @@ class Appointment extends Model
     }
     public static function postCreate($request)
     {
-        $finish_time=strtotime("+30 minutes", strtotime($request->start_time));
+        $finish_time = strtotime("+30 minutes", strtotime($request->start_time));
         DB::table('appointments')->insert(
             [
                 'category_id' => $request->category_id,
                 'advisor_id' => $request->advisor_id,
-                'date' =>  $request->date ,
+                'date' =>  $request->date,
                 'start_time' => $request->start_time,
-                'finish_time' => date('h:i', $finish_time),
+                'finish_time' => date('H:i', $finish_time),
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]
         );
+        return 200;
+    }
+    public static function postAddStudent($request)
+    {
+        $appointment = DB::table('appointments')->where('id', $request->id)->first();
+        $advisor = DB::table('advisor')->where('id', $appointment->advisor_id)->first();
+        DB::table('appointments')
+            ->where('id', $appointment->id)
+            ->update(
+                [
+                    'reason' => $request->reason,
+                    'phone_call' => $request->phone_call,
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                ]
+            );
+        $student_id = DB::table('student')->insertGetId(
+            [
+                'asu_id' => $request->asu_id,
+                'first_name' => $request->first_name,
+                'last_name' =>  $request->last_name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            ]
+        );
+        DB::table('student_appointment')->insert(
+            [
+                'student_id' => $student_id,
+                'appointment_id' => $request->id,
+            ]
+        );
+
+        $student_email = $request->email;
+        $advisor_email = $advisor->email;
+        $subject = "Request an appointment";
+        $message = 'Student name:' . $request->first_name . ' ' . $request->last_name . 'Email:' . $request->email . ' requested an appointment for reasons ' . $request->reason . ' on the day' . $appointment->date . 'from : ' . $appointment->start_time . 'to' . $appointment->finish_time;
+
+        Mail::to($student_email)->send(new SendMail($subject, $message));
+        Mail::to($advisor_email)->send(new SendMail($subject, $message));
+
         return 200;
     }
     public static function cancel($request)
@@ -77,13 +122,14 @@ class Appointment extends Model
             ->join('advisor as ad', 'ad.id', '=', 'a.advisor_id')
             ->select('s.email as student_email', 'ad.email as advisor_email')
             ->get();
-        $email = $res[0]->student_email;
-        $email2 = $res[0]->advisor_email;
+        $student_email = $res[0]->student_email;
+        $advisor_email = $res[0]->advisor_email;
         $subject = "Cancel an appointment";
-        $message = $res[0]->student_email . ' ' . $reason;
+        $message = 'Student name:' . $res[0]->first_name . ' ' . $res[0]->last_name . 'Email:' . $res[0]->email ;
 
-        Mail::to($email)->send(new SendMail($subject, $message));
-        Mail::to($email2)->send(new SendMail($subject, $message));
+
+        Mail::to($student_email)->send(new SendMail($subject, $message));
+        Mail::to($advisor_email)->send(new SendMail($subject, $message));
 
         return 200;
     }

@@ -18,15 +18,13 @@ class IndexController extends Controller
     //page appointment
     public function appointment()
     {
-        $category = Category::getList();
-        $advisor = Advisor::getList();
         $appointments = Appointment::getList();
-        return view('appointment', compact('appointments', 'category', 'advisor'));
+        return view('appointment', compact('appointments'));
     }
-    public function postAppointment(Request $request)
+    public function postAddStudent(Request $request)
     {
         try {
-            $res = Appointment::postCreate($request);
+            $res = Appointment::postAddStudent($request);
             if ($res == 200) {
                 return back()
                     ->with('success', 'You have added a successful appointment');
