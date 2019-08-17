@@ -45,6 +45,17 @@ class Appointment extends Model
             ->get();
         return $res;
     }
+    public static function searchAppointment($request)
+    {
+        $res = DB::table('appointments as a')
+            ->join('category as c', 'c.id', '=', 'a.category_id')
+            ->join('advisor as as', 'as.id', '=', 'a.advisor_id')
+            ->select("a.*", "c.name as category_name", 'as.first_name as first_name', "as.last_name as last_name")
+            ->where('a.category_id',$request->category_id)
+            ->where('a.advisor_id',$request->advisor_id)
+            ->get();
+        return $res;
+    }
     public static function postCreate($request)
     {
         $finish_time = strtotime("+30 minutes", strtotime($request->start_time));

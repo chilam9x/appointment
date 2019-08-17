@@ -1,7 +1,8 @@
 <?php
 Route::get('/', 'IndexController@index');
 Route::get('appointment', 'IndexController@appointment');
-Route::post('appointment', 'IndexController@postAddStudent');
+Route::post('search-appointment', 'IndexController@searchAppointment');
+Route::post('add-student', 'IndexController@postAddStudent');
 
 Route::get('cancel-appointment', 'IndexController@cancelAppointment');
 Route::post('cancel-appointment', 'IndexController@postCancelAppointment');

@@ -23,7 +23,7 @@
                         <h5>Appointment infomation</h5>
                     </div>
                     <div class="panel-body">
-                        <form class="form-inline" action="cancel-appointment" method="POST">
+                        <form class="form-inline" action="search-appointment" method="POST">
                             <input type="hidden" name="_token" value="{{csrf_token()}}">
                             <div class="col-sm-4">
                                 <div class="form-group">
@@ -60,7 +60,7 @@
         <div id="eventContent" title="Event Details" style="display:none;">
             <strong> Start: </strong> <span id="startTime"></span> ,
             <strong> End: </strong><span id="endTime"></span><br>
-            <form class="form-horizontal" action="appointment" method="POST">
+            <form class="form-horizontal" action="add-student" method="POST">
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <input type="hidden" id="id" name="id" value="">
                 <div class="col-sm-6">

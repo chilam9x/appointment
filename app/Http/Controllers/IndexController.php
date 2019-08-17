@@ -23,6 +23,18 @@ class IndexController extends Controller
         $advisor = Advisor::getList();
         return view('appointment', compact('appointments', 'category', 'advisor'));
     }
+    public function searchAppointment(Request $request)
+    {
+        try {
+            $appointments = Appointment::searchAppointment($request);
+            $category = Category::getList();
+            $advisor = Advisor::getList();
+            return view('appointment', compact('appointments', 'category', 'advisor'));
+            
+        } catch (\Exception $ex) {
+            return $ex;
+        }
+    }
     public function postAddStudent(Request $request)
     {
         try {
