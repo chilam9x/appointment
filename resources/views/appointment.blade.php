@@ -30,17 +30,21 @@
                                     <label for="email">Category:</label>
                                     <select class="form-control" name="category_id">
                                         @foreach($category as $c)
-                                        <option value="{{$c->id}}">{{$c->name}} </option>
+                                        <option value="{{ $c->id }}" @if($category_id==$c->id) {{ 'selected' }}
+                                            @endif>{{ $c->name }}</option>
                                         @endforeach
                                     </select>
+
                                 </div>
                             </div>
+
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="email">Advisor:</label>
                                     <select class="form-control" name="advisor_id">
                                         @foreach($advisor as $a)
-                                        <option value="{{$a->id}}">{{$a->first_name}} {{$a->last_name}} </option>
+                                        <option value="{{$a->id}}" @if($advisor_id==$a->id) {{ 'selected' }}
+                                            @endif>{{$a->first_name}} {{$a->last_name}} </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -56,7 +60,7 @@
                 </div>
             </div>
         </div>
-
+        <!-- Modal info appointment-->
         <div id="eventContent" title="Event Details" style="display:none;">
             <strong> Start: </strong> <span id="startTime"></span> ,
             <strong> End: </strong><span id="endTime"></span><br>
@@ -111,7 +115,7 @@
                         <textarea class="form-control" name="reason" type="text" required rows="5"></textarea>
                     </div>
                 </div>
-                <div class="col-sm-12" id="form_reason_cancel" style="display: none;">
+                <div class="col-sm-12" id="form_reason_cancel">
                     <div class="form-group">
                         <h5>* Reason cancel: </h5>
                         <textarea class="form-control" id="reason_cancel" name="reason_cancel" type="text" rows="5"
@@ -143,6 +147,11 @@
                 // Display only business hours (8am to 5pm)
                 minTime: "08:00",
                 maxTime: "17:30",
+                businessHours: {
+                    dow: [1, 2, 3, 4, 5], // Monday - Thursday
+                    start: '08:00', // start time (8am)
+                    end: '17:30', // end time (5pm)
+                },
                 hiddenDays: [0, 6], // Hide Sundays and Saturdays
 
                 events: [
@@ -175,8 +184,7 @@
                         $("#category_id").val(event.category_name);
                         $("#advisor_id").val(event.advisor_name);
 
-                        if (event.reason != '') {
-                            $("#form_reason_cancel").css("display", "inline");
+                        if (event.reason != '') { //apm have student
                             $("#btnSave").css("display", "none");
                             $("#first_name").css("display", "none");
                             $("#last_name").css("display", "none");
@@ -187,11 +195,11 @@
                             $("#phone_call").css("display", "none");
                             $("#reason").css("display", "none");
                             $("#form_reason_cancel").css("display", "none");
-                            if (event.reason_cancel != '') {
+                            if (event.reason_cancel != '') { //apm cancel
                                 $("#form_reason_cancel").css("display", "inline");
                                 $("#reason_cancel").val(event.reason_cancel);
                             }
-                        } else {
+                        } else { //apm new
                             $("#btnSave").css("display", "inline");
                             $("#first_name").css("display", "inline");
                             $("#last_name").css("display", "inline");
@@ -200,7 +208,7 @@
                             $("#phone").css("display", "inline");
                             $("#reason").css("display", "inline");
                             $("#phone_call").css("display", " inline-table");
-                            $("#reason_cancel").val('');
+                            $("#reason_cancel").val('null');
                             $("#form_reason_cancel").css("display", "none");
                         }
 

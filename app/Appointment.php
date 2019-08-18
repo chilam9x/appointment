@@ -63,16 +63,17 @@ class Appointment extends Model
             [
                 'category_id' => $request->category_id,
                 'advisor_id' => $request->advisor_id,
-                'date' =>  $request->date,
+                'date' => date("Y-m-d", strtotime($request->date)),
                 'start_time' => $request->start_time,
                 'finish_time' => date('H:i', $finish_time),
-                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'created_at' => Carbon::now()->format('Y-m-d'),
             ]
         );
         return 200;
     }
     public static function postAddStudent($request)
     {
+
         $appointment = DB::table('appointments')->where('id', $request->id)->first();
         $advisor = DB::table('advisor')->where('id', $appointment->advisor_id)->first();
         DB::table('appointments')
@@ -104,7 +105,7 @@ class Appointment extends Model
         $student_email = $request->email;
         $advisor_email = $advisor->email;
         $subject = "Request an appointment";
-        $message = 'Student name:' . $request->first_name . ' ' . $request->last_name . 'Email:' . $request->email . ' requested an appointment for reasons ' . $request->reason . ' on the day' . $appointment->date . 'from : ' . $appointment->start_time . 'to' . $appointment->finish_time;
+        $message = 'Student name: ' . $request->first_name . ' ' . $request->last_name .', ASU ID: '.$request->asu_id. ', Email: ' . $request->email . ', reason ' . $request->reason . ', day ' . $appointment->date . ' from : ' . $appointment->start_time . ' to: ' . $appointment->finish_time;
 
         Mail::to($student_email)->send(new SendMail($subject, $message));
         Mail::to($advisor_email)->send(new SendMail($subject, $message));
@@ -114,6 +115,7 @@ class Appointment extends Model
     public static function cancel($request)
     {
         self::findEmailCancel($request->id, $request->reason_cancel);
+        
         DB::table('appointments')
             ->where('id', $request->id)
             ->update(
@@ -133,14 +135,16 @@ class Appointment extends Model
             ->join('advisor as ad', 'ad.id', '=', 'a.advisor_id')
             ->select('s.email as student_email', 'ad.email as advisor_email')
             ->get();
-        $student_email = $res[0]->student_email;
-        $advisor_email = $res[0]->advisor_email;
-        $subject = "Cancel an appointment";
-        $message = 'Student name:' . $res[0]->first_name . ' ' . $res[0]->last_name . 'Email:' . $res[0]->email ;
-
-
-        Mail::to($student_email)->send(new SendMail($subject, $message));
-        Mail::to($advisor_email)->send(new SendMail($subject, $message));
+        if($res){
+            $student_email = $res[0]->student_email;
+            dd($res);
+            $advisor_email = $res[0]->advisor_email;
+            $subject = "Cancel an appointment";
+            $message = 'Student name: ' . $res[0]->first_name . ' ' . $res[0]->last_name . ', ASU ID: ' . $res[0]->asu_id. ', Email: ' . $res[0]->email .' reason cancel'.  $res[0]->reason_cancel. ', day ' . $res[0]->date . ' from : ' . $res[0]->start_time . ' to: ' . $res[0]->finish_time;
+    
+            Mail::to($student_email)->send(new SendMail($subject, $message));
+            Mail::to($advisor_email)->send(new SendMail($subject, $message));
+        }   
 
         return 200;
     }

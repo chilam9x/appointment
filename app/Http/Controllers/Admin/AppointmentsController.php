@@ -16,14 +16,11 @@ class AppointmentsController extends Controller
 
     public function index()
     {
-        if (!Gate::allows('appointment_access')) {
-            return abort(401);
-        }
+
         $category = Category::getList();
         $advisor = Advisor::getList();
         $appointments = Appointment::getListAll();
         $apm = Appointment::getList();
-
         return view('admin.appointments.index', compact('apm','appointments', 'category', 'advisor'));
     }
     public function postCreate(Request $request)

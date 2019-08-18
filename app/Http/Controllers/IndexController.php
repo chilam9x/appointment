@@ -7,7 +7,6 @@ use App\Appointment;
 use App\Category;
 use App\Student;
 use Illuminate\Http\Request;
-
 class IndexController extends Controller
 {
     //page index
@@ -21,7 +20,9 @@ class IndexController extends Controller
         $appointments = Appointment::getList();
         $category = Category::getList();
         $advisor = Advisor::getList();
-        return view('appointment', compact('appointments', 'category', 'advisor'));
+        $category_id='';
+        $advisor_id='';
+        return view('appointment', compact('appointments', 'category', 'advisor','category_id','advisor_id'));
     }
     public function searchAppointment(Request $request)
     {
@@ -29,7 +30,9 @@ class IndexController extends Controller
             $appointments = Appointment::searchAppointment($request);
             $category = Category::getList();
             $advisor = Advisor::getList();
-            return view('appointment', compact('appointments', 'category', 'advisor'));
+            $category_id=$request->category_id;
+            $advisor_id=$request->advisor_id;
+            return view('appointment', compact('appointments', 'category', 'advisor','category_id','advisor_id'));
             
         } catch (\Exception $ex) {
             return $ex;
