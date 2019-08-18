@@ -9,16 +9,6 @@ use Illuminate\Support\Facades\DB;
 use Mail;
 use App\Mail\SendMail;
 
-/**
- * Class Appointment
- *
- * @package App
- * @property string $client
- * @property string $employee
- * @property string $start_time
- * @property string $finish_time
- * @property text $comments
- */
 class Appointment extends Model
 {
 
@@ -133,11 +123,11 @@ class Appointment extends Model
             ->join('student_appointment as sa', 'a.id', '=', 'sa.appointment_id')
             ->join('student as s', 's.id', '=', 'sa.student_id')
             ->join('advisor as ad', 'ad.id', '=', 'a.advisor_id')
-            ->select('s.email as student_email', 'ad.email as advisor_email')
+            ->select('s.email as student_email', 'ad.email as advisor_email','s.*','a.reason_cancel','a.date','a.start_time','a.finish_time')
             ->get();
         if($res){
             $student_email = $res[0]->student_email;
-            dd($res);
+          
             $advisor_email = $res[0]->advisor_email;
             $subject = "Cancel an appointment";
             $message = 'Student name: ' . $res[0]->first_name . ' ' . $res[0]->last_name . ', ASU ID: ' . $res[0]->asu_id. ', Email: ' . $res[0]->email .' reason cancel'.  $res[0]->reason_cancel. ', day ' . $res[0]->date . ' from : ' . $res[0]->start_time . ' to: ' . $res[0]->finish_time;

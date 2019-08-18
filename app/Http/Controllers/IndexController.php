@@ -64,10 +64,7 @@ class IndexController extends Controller
         try {
             $student = Student::checkStudent($request);
             if($student->count()==0){
-                $category = Category::getList();
-                $advisor = Advisor::getList();
-                $appointments = Appointment::getList();
-                return view('appointment', compact('appointments', 'category', 'advisor'));
+               return back()->with('error_code', 5);
             }
             else {
             return view('cancel-appointment', compact('student'));
