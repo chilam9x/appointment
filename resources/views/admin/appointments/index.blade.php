@@ -104,7 +104,7 @@
                             <label for="email">Category:</label>
                             <select class="form-control" name="category_id">
                                 @foreach($category as $c)
-                                <option value="{{$c->id}}">{{$c->name}} </option>
+                                <option value="{{$c->id}}"> {{$c->name}} </option>
                                 @endforeach
                             </select>
                         </div>

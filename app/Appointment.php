@@ -2,12 +2,11 @@
 
 namespace App;
 
+use App\Mail\SendMail;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Mail;
-use App\Mail\SendMail;
 
 class Appointment extends Model
 {
@@ -20,7 +19,7 @@ class Appointment extends Model
             ->rightJoin('appointments as a', 'a.id', '=', 'sa.appointment_id')
             ->join('category as c', 'c.id', '=', 'a.category_id')
             ->join('advisor as as', 'as.id', '=', 'a.advisor_id')
-            ->select("a.id as apm_id",'s.*', 'a.id as ap_id', 'a.date', 'a.start_time', 'a.finish_time',  'a.created_at as ap_created_at', 'c.name as category_name', 'as.first_name as advisor_first_name', 'as.last_name as advisor_last_name')
+            ->select("a.id as apm_id", 's.*', 'a.id as ap_id', 'a.date', 'a.start_time', 'a.finish_time', 'a.created_at as ap_created_at', 'c.name as category_name', 'as.first_name as advisor_first_name', 'as.last_name as advisor_last_name')
             ->orderBy('a.id', 'desc')
             ->get();
         return $res;
@@ -28,9 +27,11 @@ class Appointment extends Model
     public static function searchAppointment($request)
     {
         $res = DB::table('appointments as a')
+            ->rightJoin('student_appointment as sa', 'a.id', '=', 'sa.appointment_id')
+            ->rightJoin('student as s', 's.id', '=', 'sa.student_id')
             ->join('category as c', 'c.id', '=', 'a.category_id')
             ->join('advisor as as', 'as.id', '=', 'a.advisor_id')
-            ->select("a.*", "c.name as category_name", 'as.first_name as first_name', "as.last_name as last_name")
+            ->select("a.id as apm_id", 's.*', 'a.id as ap_id', 'a.date', 'a.start_time', 'a.finish_time', 'a.created_at as ap_created_at', 'c.name as category_name', 'as.first_name as advisor_first_name', 'as.last_name as advisor_last_name')
             ->where('a.category_id', $request->category_id)
             ->where('a.advisor_id', $request->advisor_id)
             ->get();
@@ -66,7 +67,7 @@ class Appointment extends Model
             [
                 'asu_id' => $request->asu_id,
                 'first_name' => $request->first_name,
-                'last_name' =>  $request->last_name,
+                'last_name' => $request->last_name,
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'reason' => $request->reason,
@@ -106,7 +107,7 @@ class Appointment extends Model
     }
     public static function findEmailCancel($id, $reason_cancel)
     {
-  
+
         $res = DB::table('student as s')
             ->where('s.id', $id)
             ->join('student_appointment as sa', 's.id', '=', 'sa.student_id')
@@ -119,7 +120,7 @@ class Appointment extends Model
 
             $advisor_email = $res[0]->advisor_email;
             $subject = "Cancel an appointment";
-            $message = 'Student name: ' . $res[0]->first_name . ' ' . $res[0]->last_name . ', ASU ID: ' . $res[0]->asu_id . ', Email: ' . $res[0]->email . ' reason cancel' .  $reason_cancel . ', day ' . $res[0]->date . ' from : ' . $res[0]->start_time . ' to: ' . $res[0]->finish_time;
+            $message = 'Student name: ' . $res[0]->first_name . ' ' . $res[0]->last_name . ', ASU ID: ' . $res[0]->asu_id . ', Email: ' . $res[0]->email . ' reason cancel' . $reason_cancel . ', day ' . $res[0]->date . ' from : ' . $res[0]->start_time . ' to: ' . $res[0]->finish_time;
 
             Mail::to($student_email)->send(new SendMail($subject, $message));
             Mail::to($advisor_email)->send(new SendMail($subject, $message));
