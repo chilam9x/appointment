@@ -167,13 +167,13 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <h5>Advisor:</h5>
-                <input class="form-control" id="advisor_id" type="text" disabled>
+                <input class="form-control" id="advisor_name" type="text" disabled>
             </div>
         </div>
         <div class="col-sm-6">
             <div class="form-group">
                 <h5>Category:</h5>
-                <input class="form-control" id="category_id" type="text" disabled>
+                <input class="form-control" id="category_name" type="text" disabled>
             </div>
         </div>
         <div class="col-sm-6" id="form_first_name">
@@ -268,7 +268,7 @@ $(document).ready(function() {
                 category_name: "{{$a->category_name}}",
                 reason: "{{$a->reason}}",
                 reason_cancel: "{{$a->reason_cancel}}",
-                advisor_name: "{{$a->first_name}}" + " " + "{{$a->last_name}}",
+                advisor_name: "{{$a->advisor_first_name}}" + " " + "{{$a->advisor_last_name}}",
                 title: "Make an appointment",
                 start: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->start_time}}',
                 end: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->finish_time }}',
@@ -289,8 +289,8 @@ $(document).ready(function() {
                     width: 1000
                 });
                 $("#id").val(event.id);
-                $("#category_id").val(event.category_name);
-                $("#advisor_id").val(event.advisor_name);
+                $("#category_name").val(event.category_name);
+                $("#advisor_name").val(event.advisor_name);
 
                 if (event.reason != '') { //apm have student
                     $("#form_first_name").css("display", "inline");
