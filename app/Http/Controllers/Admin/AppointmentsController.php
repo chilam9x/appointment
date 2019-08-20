@@ -16,11 +16,9 @@ class AppointmentsController extends Controller
 
     public function index()
     {
-
         $category = Category::getList();
         $advisor = Advisor::getList();
         $appointments = Appointment::getListAll();
-        $apm = Appointment::getList();
         return view('admin.appointments.index', compact('apm','appointments', 'category', 'advisor'));
     }
     public function postCreate(Request $request)

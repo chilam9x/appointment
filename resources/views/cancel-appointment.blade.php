@@ -11,25 +11,6 @@
     @if (Session::has('success'))
     <span class="bg-success"> {{ Session::get('success') }}</span>
     @endif
-    <!--modal asu id not exitst-->
-    <div class="modal fade" id="myModal" role="dialog" style="margin-top: 10%;">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Warning!</h4>
-                </div>
-                <div class="modal-body">
-                    <p>ASU ID does not exist, do you want to create one
-                        Appointment?</p>
-                </div>
-                <div class="modal-footer">
-                    <a type="button" class="btn btn-warning" href="{{url('appointment')}}">Create new</a>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="container-fluid">
         <div class="row">
@@ -86,9 +67,9 @@
                                             <td> Form {{$s->start_time}} to {{$s->finish_time}}</td>
                                             <td>{{($s->phone_call==1) ? 'yes' :''}}</td>
                                             <td>{{date("d-m-Y", strtotime($s->ap_created_at))}}</td>
-                                            @if($s->ap_deleted_at==null)
+                                            @if($s->cancel_at==null)
                                             <td><a href="#" data-toggle="modal" data-target="#cancel"
-                                                    onclick="openCancelModal({{$s->ap_id}})">Cancel</a> </td>
+                                                    onclick="openCancelModal({{$s->id}})">Cancel</a> </td>
                                             @else
                                             <td></td>
                                             @endif
@@ -117,7 +98,7 @@
             </div>
             <form class="form-horizontal" action="cancel-appointment" method="POST">
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
-                <input type="hidden" name="id" id="id" value="">
+                <input type="hidden" name="student_id" id="student_id" value="">
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="focusedInput">* Reason cancel: </label> <span id="error" class="text-danger"></span>
@@ -132,7 +113,26 @@
         </div>
     </div>
 </div>
-@if(!empty(Session::get('error_code')) && Session::get('error_code') == 5)
+    <!--modal asu id not exitst-->
+    <div class="modal fade" id="myModal" role="dialog" style="margin-top: 10%;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Warning!</h4>
+                </div>
+                <div class="modal-body">
+                    <p>ASU ID does not exist, do you want to create one
+                        Appointment?</p>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-warning" href="{{url('appointment')}}">Create new</a>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@if( $error_code == 5)
 <script>
 $(function() {
     $('#myModal').modal('show');
@@ -140,8 +140,8 @@ $(function() {
 </script>
 @endif
 <script>
-function openCancelModal(id) {
-    $('#id').val(id);
+function openCancelModal(student_id) {
+    $('#student_id').val(student_id);
 }
 </script>
 @endsection

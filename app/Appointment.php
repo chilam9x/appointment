@@ -13,24 +13,15 @@ class Appointment extends Model
 {
 
     //raymond
-    public static function getList()
-    {
-        $res = DB::table('appointments as a')
-            ->join('category as c', 'c.id', '=', 'a.category_id')
-            ->join('advisor as as', 'as.id', '=', 'a.advisor_id')
-            ->select("a.*", "c.name as category_name", 'as.first_name as first_name', "as.last_name as last_name")
-            ->get();
-        return $res;
-    }
-
     public static function getListAll()
     {
         $res = DB::table('student as s')
-            ->join('student_appointment as sa', 's.id', '=', 'sa.student_id')
-            ->join('appointments as a', 'a.id', '=', 'sa.appointment_id')
+            ->rightJoin('student_appointment as sa', 's.id', '=', 'sa.student_id')
+            ->rightJoin('appointments as a', 'a.id', '=', 'sa.appointment_id')
             ->join('category as c', 'c.id', '=', 'a.category_id')
             ->join('advisor as as', 'as.id', '=', 'a.advisor_id')
-            ->select('s.*', 'a.id as ap_id', 'a.reason', 'a.date', 'a.start_time', 'a.finish_time', 'a.reason_cancel', 'a.phone_call', 'a.created_at as ap_created_at', 'a.deleted_at as ap_deleted_at', 'c.name as category_name', 'as.first_name as advisor_first_name', 'as.last_name as advisor_last_name')
+            ->select("a.id as apm_id",'s.*', 'a.id as ap_id', 'a.date', 'a.start_time', 'a.finish_time',  'a.created_at as ap_created_at', 'c.name as category_name', 'as.first_name as advisor_first_name', 'as.last_name as advisor_last_name')
+            ->where('a.cancel',0)
             ->orderBy('a.id', 'desc')
             ->get();
         return $res;
@@ -41,8 +32,8 @@ class Appointment extends Model
             ->join('category as c', 'c.id', '=', 'a.category_id')
             ->join('advisor as as', 'as.id', '=', 'a.advisor_id')
             ->select("a.*", "c.name as category_name", 'as.first_name as first_name', "as.last_name as last_name")
-            ->where('a.category_id',$request->category_id)
-            ->where('a.advisor_id',$request->advisor_id)
+            ->where('a.category_id', $request->category_id)
+            ->where('a.advisor_id', $request->advisor_id)
             ->get();
         return $res;
     }
@@ -63,15 +54,12 @@ class Appointment extends Model
     }
     public static function postAddStudent($request)
     {
-
         $appointment = DB::table('appointments')->where('id', $request->id)->first();
         $advisor = DB::table('advisor')->where('id', $appointment->advisor_id)->first();
         DB::table('appointments')
             ->where('id', $appointment->id)
             ->update(
                 [
-                    'reason' => $request->reason,
-                    'phone_call' => $request->phone_call,
                     'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 ]
             );
@@ -82,6 +70,8 @@ class Appointment extends Model
                 'last_name' =>  $request->last_name,
                 'email' => $request->email,
                 'phone' => $request->phone,
+                'reason' => $request->reason,
+                'phone_call' => $request->phone_call,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]
         );
@@ -95,7 +85,7 @@ class Appointment extends Model
         $student_email = $request->email;
         $advisor_email = $advisor->email;
         $subject = "Request an appointment";
-        $message = 'Student name: ' . $request->first_name . ' ' . $request->last_name .', ASU ID: '.$request->asu_id. ', Email: ' . $request->email . ', reason ' . $request->reason . ', day ' . $appointment->date . ' from : ' . $appointment->start_time . ' to: ' . $appointment->finish_time;
+        $message = 'Student name: ' . $request->first_name . ' ' . $request->last_name . ', ASU ID: ' . $request->asu_id . ', Email: ' . $request->email . ', reason ' . $request->reason . ', day ' . $appointment->date . ' from : ' . $appointment->start_time . ' to: ' . $appointment->finish_time;
 
         Mail::to($student_email)->send(new SendMail($subject, $message));
         Mail::to($advisor_email)->send(new SendMail($subject, $message));
@@ -104,37 +94,36 @@ class Appointment extends Model
     }
     public static function cancel($request)
     {
+        // DB::table('student')
+        //     ->where('id', $request->student_id)
+        //     ->update(
+        //         [
+        //             'reason_cancel' => $request->reason_cancel,
+        //             'cancel_at' => date('Y-m-d h:i:s'),
+        //         ]
+        //     );
         self::findEmailCancel($request->id, $request->reason_cancel);
-        
-        DB::table('appointments')
-            ->where('id', $request->id)
-            ->update(
-                [
-                    'reason_cancel' => $request->reason_cancel,
-                    'deleted_at' => date('Y-m-d h:i:s'),
-                ]
-            );
         return 200;
     }
-    public static function findEmailCancel($id, $reason)
+    public static function findEmailCancel($id, $reason_cancel)
     {
         $res = DB::table('appointments as a')
             ->where('a.id', $id)
             ->join('student_appointment as sa', 'a.id', '=', 'sa.appointment_id')
             ->join('student as s', 's.id', '=', 'sa.student_id')
             ->join('advisor as ad', 'ad.id', '=', 'a.advisor_id')
-            ->select('s.email as student_email', 'ad.email as advisor_email','s.*','a.reason_cancel','a.date','a.start_time','a.finish_time')
+            ->select('s.email as student_email', 'ad.email as advisor_email', 's.*', 'a.date', 'a.start_time', 'a.finish_time')
             ->get();
-        if($res){
+        if ($res) {
             $student_email = $res[0]->student_email;
-          
+
             $advisor_email = $res[0]->advisor_email;
             $subject = "Cancel an appointment";
-            $message = 'Student name: ' . $res[0]->first_name . ' ' . $res[0]->last_name . ', ASU ID: ' . $res[0]->asu_id. ', Email: ' . $res[0]->email .' reason cancel'.  $res[0]->reason_cancel. ', day ' . $res[0]->date . ' from : ' . $res[0]->start_time . ' to: ' . $res[0]->finish_time;
-    
+            $message = 'Student name: ' . $res[0]->first_name . ' ' . $res[0]->last_name . ', ASU ID: ' . $res[0]->asu_id . ', Email: ' . $res[0]->email . ' reason cancel' .  $reason_cancel . ', day ' . $res[0]->date . ' from : ' . $res[0]->start_time . ' to: ' . $res[0]->finish_time;
+
             Mail::to($student_email)->send(new SendMail($subject, $message));
             Mail::to($advisor_email)->send(new SendMail($subject, $message));
-        }   
+        }
 
         return 200;
     }

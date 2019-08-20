@@ -27,6 +27,7 @@
     </div>
 </div>
 <br />
+
 <div class="panel panel-default">
     <div class="panel-heading">
         @lang('quickadmin.qa_list')
@@ -73,7 +74,7 @@
                     <td>{{($appointment->phone_call==1) ? 'yes' :''}}</td>
                     <td>{{$appointment->ap_created_at}}</td>
                     <td>{{$appointment->reason_cancel}}</td>
-                    <td>{{$appointment->ap_deleted_at}}</td>
+                    <td>{{$appointment->cancel_at}}</td>
                 </tr>
                 @endforeach
                 @else
@@ -229,9 +230,9 @@
 
 
     <div class="modal-footer">
-
+  
     </div>
-</div>
+</div>    
 @section('javascript')
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
@@ -262,7 +263,7 @@ $(document).ready(function() {
 
         hiddenDays: [0, 6], // Hide Sundays and Saturdays
         events: [
-            @foreach($apm as $a) {
+            @foreach($appointments as $a) {
                 id: "{{$a->id}}",
                 category_name: "{{$a->category_name}}",
                 reason: "{{$a->reason}}",
@@ -271,7 +272,7 @@ $(document).ready(function() {
                 title: "Make an appointment",
                 start: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->start_time}}',
                 end: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->finish_time }}',
-                color: '{{$a->deleted_at}}' == '' ? ('{{$a->reason}}' == '' ? "#fec627" :
+                color: '{{$a->reason_cancel}}' == '' ? ('{{$a->reason}}' == '' ? "#fec627" :
                     '#45B6AF') : "#ccc",
             },
             @endforeach
