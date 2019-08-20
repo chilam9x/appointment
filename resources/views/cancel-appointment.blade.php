@@ -5,16 +5,15 @@
 <!--cancel appointment-->
 <div id="cancel_appointment">
     <h2 class="text-center">CANCEL APPOINTMENT</h2>
-    @if (Session::has('fail'))
-    <span class="bg-danger"> {{ Session::get('fail') }}</span>
-    @endif
-    @if (Session::has('success'))
-    <span class="bg-success"> {{ Session::get('success') }}</span>
-    @endif
-
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-12 ">
+                @if (Session::has('fail'))
+                <span class="bg-danger"> {{ Session::get('fail') }}</span>
+                @endif
+                @if (Session::has('success'))
+                <span class="bg-success"> {{ Session::get('success') }}</span>
+                @endif
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h5>Student infomation</h5>
@@ -42,7 +41,6 @@
                                             <th>Email</th>
                                             <th>Phone</th>
                                             <th>Reason</th>
-                                            <th>Reason cancel</th>
                                             <th>Category</th>
                                             <th>Advisor</th>
                                             <th>Date</th>
@@ -60,7 +58,6 @@
                                             <td>{{$s->email}}</td>
                                             <td>{{$s->phone}}</td>
                                             <td>{{$s->reason}}</td>
-                                            <td>{{$s->reason_cancel}}</td>
                                             <td>{{$s->category_name}}</td>
                                             <td>{{$s->advisor_first_name}} {{$s->advisor_last_name}}</td>
                                             <td>{{$s->date}}</td>
@@ -113,25 +110,25 @@
         </div>
     </div>
 </div>
-    <!--modal asu id not exitst-->
-    <div class="modal fade" id="myModal" role="dialog" style="margin-top: 10%;">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Warning!</h4>
-                </div>
-                <div class="modal-body">
-                    <p>ASU ID does not exist, do you want to create one
-                        Appointment?</p>
-                </div>
-                <div class="modal-footer">
-                    <a type="button" class="btn btn-warning" href="{{url('appointment')}}">Create new</a>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
+<!--modal asu id not exitst-->
+<div class="modal fade" id="myModal" role="dialog" style="margin-top: 10%;">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Warning!</h4>
+            </div>
+            <div class="modal-body">
+                <p>ASU ID does not exist, do you want to create one
+                    Appointment?</p>
+            </div>
+            <div class="modal-footer">
+                <a type="button" class="btn btn-warning" href="{{url('appointment')}}">Create new</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
+</div>
 @if( $error_code == 5)
 <script>
 $(function() {
