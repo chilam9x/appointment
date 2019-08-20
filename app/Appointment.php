@@ -21,7 +21,6 @@ class Appointment extends Model
             ->join('category as c', 'c.id', '=', 'a.category_id')
             ->join('advisor as as', 'as.id', '=', 'a.advisor_id')
             ->select("a.id as apm_id",'s.*', 'a.id as ap_id', 'a.date', 'a.start_time', 'a.finish_time',  'a.created_at as ap_created_at', 'c.name as category_name', 'as.first_name as advisor_first_name', 'as.last_name as advisor_last_name')
-            ->where('a.cancel',0)
             ->orderBy('a.id', 'desc')
             ->get();
         return $res;
@@ -94,23 +93,24 @@ class Appointment extends Model
     }
     public static function cancel($request)
     {
-        // DB::table('student')
-        //     ->where('id', $request->student_id)
-        //     ->update(
-        //         [
-        //             'reason_cancel' => $request->reason_cancel,
-        //             'cancel_at' => date('Y-m-d h:i:s'),
-        //         ]
-        //     );
-        self::findEmailCancel($request->id, $request->reason_cancel);
+        DB::table('student')
+            ->where('id', $request->student_id)
+            ->update(
+                [
+                    'reason_cancel' => $request->reason_cancel,
+                    'cancel_at' => date('Y-m-d h:i:s'),
+                ]
+            );
+        self::findEmailCancel($request->student_id, $request->reason_cancel);
         return 200;
     }
     public static function findEmailCancel($id, $reason_cancel)
     {
-        $res = DB::table('appointments as a')
-            ->where('a.id', $id)
-            ->join('student_appointment as sa', 'a.id', '=', 'sa.appointment_id')
-            ->join('student as s', 's.id', '=', 'sa.student_id')
+  
+        $res = DB::table('student as s')
+            ->where('s.id', $id)
+            ->join('student_appointment as sa', 's.id', '=', 'sa.student_id')
+            ->join('appointments as a', 'a.id', '=', 'sa.appointment_id')
             ->join('advisor as ad', 'ad.id', '=', 'a.advisor_id')
             ->select('s.email as student_email', 'ad.email as advisor_email', 's.*', 'a.date', 'a.start_time', 'a.finish_time')
             ->get();

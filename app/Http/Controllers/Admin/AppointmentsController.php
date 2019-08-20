@@ -19,7 +19,7 @@ class AppointmentsController extends Controller
         $category = Category::getList();
         $advisor = Advisor::getList();
         $appointments = Appointment::getListAll();
-        return view('admin.appointments.index', compact('apm','appointments', 'category', 'advisor'));
+        return view('admin.appointments.index', compact('appointments', 'category', 'advisor'));
     }
     public function postCreate(Request $request)
     {
