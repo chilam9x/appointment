@@ -20,6 +20,7 @@ class Appointment extends Model
             ->join('category as c', 'c.id', '=', 'a.category_id')
             ->join('advisor as as', 'as.id', '=', 'a.advisor_id')
             ->select("a.id as apm_id", 's.*', 'a.id as ap_id', 'a.date', 'a.start_time', 'a.finish_time', 'a.created_at as ap_created_at', 'c.name as category_name', 'as.first_name as advisor_first_name', 'as.last_name as advisor_last_name')
+            ->where('s.cancel',0)
             ->orderBy('a.id', 'desc')
             ->get();
         return $res;
@@ -99,6 +100,7 @@ class Appointment extends Model
             ->update(
                 [
                     'reason_cancel' => $request->reason_cancel,
+                    'cancel'=>1,
                     'cancel_at' => date('Y-m-d h:i:s'),
                 ]
             );

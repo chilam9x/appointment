@@ -119,8 +119,7 @@
                 <h4 class="modal-title">Warning!</h4>
             </div>
             <div class="modal-body">
-                <p>ASU ID does not exist, do you want to create one
-                    Appointment?</p>
+                <p>You currently do not have an existing appointment, click yes to redirect to the request an appointment page</p>
             </div>
             <div class="modal-footer">
                 <a type="button" class="btn btn-warning" href="{{url('appointment')}}">Create new</a>
