@@ -78,13 +78,22 @@ class IndexController extends Controller
     public function postCancelAppointment(Request $request)
     {
         try {
-           $res = Appointment::cancel($request);
-          $res=200;
+            $res = Appointment::cancel($request);
             $error_code=0;
             if ($res == 200) {
                 $student = null;
                 return view('cancel-appointment', compact('student','error_code'));
             }
+        } catch (\Exception $ex) {
+            return $ex;
+        }
+    }
+    //ajax
+    public function getCategoryAdvisor($id)
+    {
+        try {
+            $res = Advisor::getCategoryAdvisor($id);
+            return $res;
         } catch (\Exception $ex) {
             return $ex;
         }

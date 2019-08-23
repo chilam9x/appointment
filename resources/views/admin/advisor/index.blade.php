@@ -23,6 +23,7 @@
                     <th>@lang('quickadmin.clients.fields.first-name')</th>
                     <th>@lang('quickadmin.clients.fields.last-name')</th>
                     <th>@lang('quickadmin.clients.fields.email')</th>
+                    <th>Category</th>
                     <th>Create date</th>
                     <th></th>
                 </tr>
@@ -35,6 +36,7 @@
                     <td>{{ $a->first_name }}</td>
                     <td>{{ $a->last_name }}</td>
                     <td>{{ $a->email }}</td>
+                    <td>{{$a->category_name}}</td>
                     <td> {{date("d-m-Y", strtotime($a->created_at))}} </td>
                     <td><button type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit" onclick="openEditModal({{$a->id}},'{{$a->first_name}}','{{$a->last_name}}','{{$a->email}}')">Edit</button>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete" onclick="openDeleteModal({{$a->id}},'{{$a->first_name}}','{{$a->last_name}}')">Delete</button> </td>
@@ -80,6 +82,16 @@
                             <input type="email" class="form-control" name="email" required>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">Category:</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" name="category_id" id='sltCategory'>
+                                @foreach($category as $c)
+                                <option value="{{$c->id}}">{{$c->name}} </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-danger">Save</button>
@@ -117,6 +129,16 @@
                         <label class="col-sm-3">Email:</label>
                         <div class="col-sm-9">
                             <input type="email" class="form-control" name="email" id="email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">Category:</label>
+                        <div class="col-sm-9">
+                            <select class="form-control" name="category_id" id='sltCategory'>
+                                @foreach($category as $c)
+                                <option value="{{$c->id}}">{{$c->name}} </option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>

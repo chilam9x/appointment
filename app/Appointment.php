@@ -26,8 +26,37 @@ class Appointment extends Model
         return $res;
     }
     public static function searchAppointment($request)
-    {
-        $res = DB::table('appointments as a')
+    {      
+        if($request->category_id==0 && $request->advisor_id!=0){
+            $res = DB::table('appointments as a')
+            ->rightJoin('student_appointment as sa', 'a.id', '=', 'sa.appointment_id')
+            ->rightJoin('student as s', 's.id', '=', 'sa.student_id')
+            ->join('category as c', 'c.id', '=', 'a.category_id')
+            ->join('advisor as as', 'as.id', '=', 'a.advisor_id')
+            ->select("a.id as apm_id", 's.*', 'a.id as ap_id', 'a.date', 'a.start_time', 'a.finish_time', 'a.created_at as ap_created_at', 'c.name as category_name', 'as.first_name as advisor_first_name', 'as.last_name as advisor_last_name')
+            ->where('a.advisor_id', $request->advisor_id)
+            ->get();
+        }
+        if($request->category_id!=0 && $request->advisor_id==0){
+            $res = DB::table('appointments as a')
+            ->rightJoin('student_appointment as sa', 'a.id', '=', 'sa.appointment_id')
+            ->rightJoin('student as s', 's.id', '=', 'sa.student_id')
+            ->join('category as c', 'c.id', '=', 'a.category_id')
+            ->join('advisor as as', 'as.id', '=', 'a.advisor_id')
+            ->select("a.id as apm_id", 's.*', 'a.id as ap_id', 'a.date', 'a.start_time', 'a.finish_time', 'a.created_at as ap_created_at', 'c.name as category_name', 'as.first_name as advisor_first_name', 'as.last_name as advisor_last_name')
+            ->where('a.category_id', $request->category_id)
+            ->get();
+        }
+        if($request->category_id==0 && $request->advisor_id==0){
+            $res = DB::table('appointments as a')
+            ->rightJoin('student_appointment as sa', 'a.id', '=', 'sa.appointment_id')
+            ->rightJoin('student as s', 's.id', '=', 'sa.student_id')
+            ->join('category as c', 'c.id', '=', 'a.category_id')
+            ->join('advisor as as', 'as.id', '=', 'a.advisor_id')
+            ->select("a.id as apm_id", 's.*', 'a.id as ap_id', 'a.date', 'a.start_time', 'a.finish_time', 'a.created_at as ap_created_at', 'c.name as category_name', 'as.first_name as advisor_first_name', 'as.last_name as advisor_last_name')
+            ->get();
+        }else{
+            $res = DB::table('appointments as a')
             ->rightJoin('student_appointment as sa', 'a.id', '=', 'sa.appointment_id')
             ->rightJoin('student as s', 's.id', '=', 'sa.student_id')
             ->join('category as c', 'c.id', '=', 'a.category_id')
@@ -36,6 +65,7 @@ class Appointment extends Model
             ->where('a.category_id', $request->category_id)
             ->where('a.advisor_id', $request->advisor_id)
             ->get();
+        }
         return $res;
     }
     public static function postCreate($request)

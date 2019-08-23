@@ -25,21 +25,20 @@
                     <div class="panel-body">
                         <div class="col-sm-12">
                             <form class="form-inline" action="search-appointment" method="POST">
-                            <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                <input type="hidden" name="_token" value="{{csrf_token()}}">
                                 <div class="form-group">
-                                    <label for="email">Advisor:</label>
-                                    <select class="form-control" name="advisor_id">
-                                        @foreach($advisor as $a)
-                                        <option value="{{$a->id}}" {{$a->id==$advisor_id ? "selected": ''}}>{{$a->first_name}} {{$a->last_name}} </option>
+                                    <label for="pwd">Category:</label>
+                                    <select class="form-control" name="category_id" id='sltCategory'>
+                                        <option value="0">All</option>
+                                        @foreach($category as $c)
+                                        <option value="{{$c->id}}" {{$c->id==$category_id ? "selected": ''}}>{{$c->name}} </option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="pwd">Category:</label>
-                                    <select class="form-control" name="category_id">
-                                        @foreach($category as $c)
-                                        <option value="{{$c->id}}" {{$c->id==$category_id ? "selected": ''}}>{{$c->name}} </option>
-                                        @endforeach
+                                    <label for="email">Advisor:</label>
+                                    <select class="form-control" name="advisor_id" id="sltAdvisor">
+                                    <option value="0">All</option>
                                     </select>
                                 </div>
                                 <button type="submit" class="btn btn-warning">Search</button>
@@ -119,110 +118,128 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js'></script>
     <script>
-    $(document).ready(function() {
-        // page is now ready, initialize the calendar...
-        $('#calendar').fullCalendar({
-            // put your options and callbacks here
-            defaultView: 'agendaWeek',
-            selectHelper: true,
-            slotDuration: '00:15:00',
-            slotEventOverlap: false,
-            allDaySlot: false,
+        $(document).ready(function() {
+            // page is now ready, initialize the calendar...
+            $('#calendar').fullCalendar({
+                // put your options and callbacks here
+                defaultView: 'agendaWeek',
+                selectHelper: true,
+                slotDuration: '00:15:00',
+                slotEventOverlap: false,
+                allDaySlot: false,
 
-            // Display only business hours (8am to 5pm)
-            minTime: "08:00",
-            maxTime: "17:30",
-            hiddenDays: [0, 6], // Hide Sundays and Saturdays
+                // Display only business hours (8am to 5pm)
+                minTime: "08:00",
+                maxTime: "17:30",
+                hiddenDays: [0, 6], // Hide Sundays and Saturdays
 
-            events: [
-                @foreach($appointments as $a) {
-                    id: "{{$a->apm_id}}",
-                    category_name: "{{$a->category_name}}",
-                    advisor_name: "{{$a->advisor_first_name}}" + " " + "{{$a->advisor_last_name}}",
-                    reason: "{{$a->reason}}",
-                    reason_cancel: "{{$a->reason_cancel}}",
-                    title: "Make an appointment",
-                    start: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->start_time}}',
-                    end: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->finish_time }}',
-                    color: '{{$a->reason}}' == '' ? "#fec627" : ('{{$a->reason}}' != '' &&
-                        '{{$a->reason_cancel}}' != '') ? "#fec627" : '#45B6AF',
-                },
-                @endforeach
-            ],
-            eventRender: function(event, element) {
-                element.attr('href', 'javascript:void(0);');
-                element.click(function() {
-                    $("#startTime").html(moment(event.start).format('MMM Do h:mm A'));
-                    $("#endTime").html(moment(event.end).format('MMM Do h:mm A'));
-                    $("#eventInfo").html(event.description);
-                    $("#eventContent").dialog({
-                        modal: true,
-                        title: event.title,
-                        width: 1000
+                events: [
+                    @foreach($appointments as $a) {
+                        id: "{{$a->apm_id}}",
+                        category_name: "{{$a->category_name}}",
+                        advisor_name: "{{$a->advisor_first_name}}" + " " + "{{$a->advisor_last_name}}",
+                        reason: "{{$a->reason}}",
+                        reason_cancel: "{{$a->reason_cancel}}",
+                        title: "Make an appointment",
+                        start: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->start_time}}',
+                        end: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->finish_time }}',
+                        color: '{{$a->reason}}' == '' ? "#fec627" : ('{{$a->reason}}' != '' &&
+                            '{{$a->reason_cancel}}' != '') ? "#fec627" : '#45B6AF',
+                    },
+                    @endforeach
+                ],
+                eventRender: function(event, element) {
+                    element.attr('href', 'javascript:void(0);');
+                    element.click(function() {
+                        $("#startTime").html(moment(event.start).format('MMM Do h:mm A'));
+                        $("#endTime").html(moment(event.end).format('MMM Do h:mm A'));
+                        $("#eventInfo").html(event.description);
+                        $("#eventContent").dialog({
+                            modal: true,
+                            title: event.title,
+                            width: 1000
+                        });
+                        $("#id").val(event.id);
+                        $("#category_name").val(event.category_name);
+                        $("#advisor_name").val(event.advisor_name);
+
+                        if (event.reason != '') {
+                            $("#btnSave").css("display", "none");
+                            $("#first_name").css("display", "none");
+                            $("#last_name").css("display", "none");
+                            $("#asu_id").css("display", "none");
+                            $("#email").css("display", "none");
+                            $("#phone").css("display", "none");
+                            $("#reason").css("display", "none");
+                            $("#phone_call").css("display", "none");
+                            $("#reason").css("display", "none");
+                        }
+                        if ((event.reason == '') || (event.reason != '' && event
+                                .reason_cancel != '')) {
+                            $("#btnSave").css("display", "inline");
+                            $("#first_name").css("display", "inline");
+                            $("#last_name").css("display", "inline");
+                            $("#asu_id").css("display", "inline");
+                            $("#email").css("display", "inline");
+                            $("#phone").css("display", "inline");
+                            $("#reason").css("display", "inline");
+                            $("#phone_call").css("display", " inline-table");
+                        }
+
                     });
-                    $("#id").val(event.id);
-                    $("#category_name").val(event.category_name);
-                    $("#advisor_name").val(event.advisor_name);
-
-                    if (event.reason != '') {
-                        $("#btnSave").css("display", "none");
-                        $("#first_name").css("display", "none");
-                        $("#last_name").css("display", "none");
-                        $("#asu_id").css("display", "none");
-                        $("#email").css("display", "none");
-                        $("#phone").css("display", "none");
-                        $("#reason").css("display", "none");
-                        $("#phone_call").css("display", "none");
-                        $("#reason").css("display", "none");
-                    }
-                    if ((event.reason == '') || (event.reason != '' && event
-                            .reason_cancel != '')) {
-                        $("#btnSave").css("display", "inline");
-                        $("#first_name").css("display", "inline");
-                        $("#last_name").css("display", "inline");
-                        $("#asu_id").css("display", "inline");
-                        $("#email").css("display", "inline");
-                        $("#phone").css("display", "inline");
-                        $("#reason").css("display", "inline");
-                        $("#phone_call").css("display", " inline-table");
-                    }
-
-                });
-            }
-        });
-    });
-
-    $(function() {
-        var d = new Date(),
-            h = d.getHours(),
-            m = d.getMinutes();
-        if (h < 10) h = '0' + h;
-        if (m < 10) m = '0' + m;
-        $('input[type="time"][value="now"]').each(function() {
-            $(this).attr({
-                'value': h + ':' + m
+                }
             });
         });
-    });
+
+        $(function() {
+            var d = new Date(),
+                h = d.getHours(),
+                m = d.getMinutes();
+            if (h < 10) h = '0' + h;
+            if (m < 10) m = '0' + m;
+            $('input[type="time"][value="now"]').each(function() {
+                $(this).attr({
+                    'value': h + ':' + m
+                });
+            });
+        });
     </script>
     <script>
-    $(function() {
-        $("#datepicker").datepicker({
-            beforeShowDay: function(d) {
-                var day = d.getDay();
-                return [(day != 0 && day != 6)];
-            }
+        $(function() {
+            $("#datepicker").datepicker({
+                beforeShowDay: function(d) {
+                    var day = d.getDay();
+                    return [(day != 0 && day != 6)];
+                }
+            });
+            $('#btnSave').click(function() {
+                var asu_id = $('#ip_asu_id').val();
+                if (asu_id.length == 10) {
+                    $('#limit_asu_id').html('');
+                    return true;
+                } else {
+                    $('#limit_asu_id').html('Please enter 10 characters');
+                    return false;
+                }
+            });
+            $('#sltCategory').change(function() {
+                var Id = $('#sltCategory').val();
+                $.ajax({
+                    type: "GET",
+                    url: 'category-advisor/' + Id,
+                    success: function(data) {
+                        $("#sltAdvisor").empty();
+                        data.forEach(function(item) {
+                            console.log(item);
+                            $("#sltAdvisor").append("<option value = '" + item.id + "'>" + item.first_name +" " + item.last_name+ "</option>");
+                        })
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log('jqXHR:');
+                        console.log(jqXHR);
+                    }
+                })
+            });
         });
-        $('#btnSave').click(function() {
-            var asu_id = $('#ip_asu_id').val();
-            if (asu_id.length == 10) {
-                $('#limit_asu_id').html('');
-                return true;
-            } else {
-                $('#limit_asu_id').html('Please enter 10 characters');
-                return false;
-            }
-        });
-    });
     </script>
     @endsection

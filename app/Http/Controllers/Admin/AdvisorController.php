@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 use App\Advisor;
+use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
@@ -13,7 +14,8 @@ class AdvisorController extends Controller
     public function index()
     {
         $advisor=Advisor::getList();
-        return view('admin.advisor.index',['advisor'=>$advisor]);
+        $category=Category::getList();
+        return view('admin.advisor.index',['advisor'=>$advisor,'category'=>$category]);
     }
 
     public function postCreate(Request $request)

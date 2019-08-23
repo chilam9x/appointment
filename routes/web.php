@@ -1,12 +1,15 @@
 <?php
 Route::get('/', 'IndexController@index');
+
 Route::get('appointment', 'IndexController@appointment');
 Route::post('search-appointment', 'IndexController@searchAppointment');
 Route::post('add-student', 'IndexController@postAddStudent');
+Route::get('category-advisor/{id}', 'IndexController@getCategoryAdvisor');
 
 Route::get('cancel-appointment', 'IndexController@cancelAppointment');
 Route::post('cancel-appointment', 'IndexController@postCancelAppointment');
 Route::post('check-student', 'IndexController@checkStudent');
+
 Route::get('contact-us', 'Admin\ContactUsController@index');
 Route::post('contact-us', 'Admin\ContactUsController@postCreate')->name('contact-us');
 
