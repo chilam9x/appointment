@@ -37,6 +37,7 @@ class Advisor extends Model
                     'first_name' => $request->first_name,
                     'last_name' => $request->last_name,
                     'email' => $request->email,
+                    'category_id'=>$request->category_id,
                     'updated_at' => date('Y-m-d'),
                 ]
             );
