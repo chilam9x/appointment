@@ -102,7 +102,7 @@
                     <div>
                         <div class="form-group">
                             <label for="email">Category:</label>
-                            <select class="form-control" name="category_id">
+                            <select class="form-control" name="category_id" id='sltCategory'>
                                 @foreach($category as $c)
                                 <option value="{{$c->id}}"> {{$c->name}} </option>
                                 @endforeach
@@ -110,10 +110,8 @@
                         </div>
                         <div class="form-group">
                             <label for="email">Advisor:</label>
-                            <select class="form-control" name="advisor_id">
-                                @foreach($advisor as $a)
-                                <option value="{{$a->id}}">{{$a->first_name}} {{$a->last_name}} </option>
-                                @endforeach
+                            <select class="form-control" name="advisor_id" id="sltAdvisor">
+                                <option value="0">All</option>
                             </select>
                         </div>
                     </div>
@@ -332,6 +330,24 @@ $(function() {
             return [(day != 0 && day != 6)];
         }
     });
+    $('#sltCategory').change(function() {
+                var Id = $('#sltCategory').val();
+                $.ajax({
+                    type: "GET",
+                    url: 'category-advisor/' + Id,
+                    success: function(data) {
+                        $("#sltAdvisor").empty();
+                        data.forEach(function(item) {
+                            console.log(item);
+                            $("#sltAdvisor").append("<option value = '" + item.id + "'>" + item.first_name +" " + item.last_name+ "</option>");
+                        })
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log('jqXHR:');
+                        console.log(jqXHR);
+                    }
+                })
+            });
 });
 </script>
 @endsection
