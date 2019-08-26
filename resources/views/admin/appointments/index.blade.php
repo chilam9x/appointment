@@ -2,10 +2,10 @@
 
 @section('content')
 <style>
-.ui-widget-content {
-    width: 95% !important;
-    top: 25% !important;
-}
+    .ui-widget-content {
+        width: 95% !important;
+        top: 25% !important;
+    }
 </style>
 <h3 class="page-title">@lang('quickadmin.appointments.title')</h3>
 @if (Session::has('fail'))
@@ -15,8 +15,7 @@
 <span class="bg-success"> {{ Session::get('success') }}</span>
 @endif
 <p>
-    <button type="button" class="btn btn-success =" data-toggle="modal"
-        data-target="#create">@lang('quickadmin.qa_add_new')</button>
+    <button type="button" class="btn btn-success =" data-toggle="modal" data-target="#create">@lang('quickadmin.qa_add_new')</button>
 </p>
 
 <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.css' />
@@ -34,8 +33,7 @@
     </div>
 
     <div class="panel-body table-responsive">
-        <table
-            class="table table-bordered table-striped {{ count($appointments) > 0 ? 'datatable' : '' }} @can('appointment_delete') dt-select @endcan">
+        <table class="table table-bordered table-striped {{ count($appointments) > 0 ? 'datatable' : '' }} @can('appointment_delete') dt-select @endcan">
             <thead>
                 <tr>
                     @can('appointment_delete')
@@ -103,6 +101,7 @@
                         <div class="form-group">
                             <label for="email">Category:</label>
                             <select class="form-control" name="category_id" id='sltCategory'>
+                                <option value="0">Please select a category</option>
                                 @foreach($category as $c)
                                 <option value="{{$c->id}}"> {{$c->name}} </option>
                                 @endforeach
@@ -111,15 +110,13 @@
                         <div class="form-group">
                             <label for="email">Advisor:</label>
                             <select class="form-control" name="advisor_id" id="sltAdvisor">
-                                <option value="0">All</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-6">
                             <label for="focusedInput">Date choose: </label>
-                            <input class="form-control" name="date" type="text" id="datepicker"
-                                value="<?php echo date('Y-m-d'); ?>" required>
+                            <input class="form-control" name="date" type="text" id="datepicker" value="<?php echo date('Y-m-d'); ?>" required>
                         </div>
                         <div class="col-sm-6">
                             <label for="focusedInput">Start time: </label>
@@ -205,9 +202,9 @@
             </div>
         </div>
         <div class="col-sm-6">
-        <label class="checkbox-inline" id="phone_call"><input type="checkbox" value="1" name="phone_call">Phone
-            call
-            appointment</label></div>
+            <label class="checkbox-inline" id="phone_call"><input type="checkbox" value="1" name="phone_call">Phone
+                call
+                appointment</label></div>
     </div>
 
     <div class="row">
@@ -220,134 +217,131 @@
         <div class="col-sm-6" id="form_reason_cancel">
             <div class="form-group">
                 <h5>* Reason cancel: </h5>
-                <textarea class="form-control" id="reason_cancel" name="reason_cancel" type="text" rows="5"
-                    required></textarea>
+                <textarea class="form-control" id="reason_cancel" name="reason_cancel" type="text" rows="5" required></textarea>
             </div>
         </div>
     </div>
 
 
     <div class="modal-footer">
-  
     </div>
-</div>    
+</div>
 @section('javascript')
 
 <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js'></script>
 <script>
-$(document).ready(function() {
-    // page is now ready, initialize the calendar...
-    $('#calendar').fullCalendar({
-        // put your options and callbacks here
-        defaultView: 'agendaWeek',
-        editable: true,
-        eventOverlap: false,
-        selectable: true,
-        selectHelper: true,
-        slotDuration: '00:15:00',
-        slotEventOverlap: false,
-        allDaySlot: false,
+    $(document).ready(function() {
+        // page is now ready, initialize the calendar...
+        $('#calendar').fullCalendar({
+            // put your options and callbacks here
+            defaultView: 'agendaWeek',
+            editable: true,
+            eventOverlap: false,
+            selectable: true,
+            selectHelper: true,
+            slotDuration: '00:15:00',
+            slotEventOverlap: false,
+            allDaySlot: false,
 
-        // Display only business hours (8am to 5pm)
-        minTime: "08:00",
-        maxTime: "17:30",
+            // Display only business hours (8am to 5pm)
+            minTime: "08:00",
+            maxTime: "17:30",
 
-        businessHours: {
-            dow: [1, 2, 3, 4, 5], // Monday - Thursday
-            start: '08:00', // start time (8am)
-            end: '17:30', // end time (5pm)
-        },
-
-        hiddenDays: [0, 6], // Hide Sundays and Saturdays
-        events: [
-            @foreach($appointments as $a) {
-                id: "{{$a->id}}",
-                category_name: "{{$a->category_name}}",
-                reason: "{{$a->reason}}",
-                reason_cancel: "{{$a->reason_cancel}}",
-                advisor_name: "{{$a->advisor_first_name}}" + " " + "{{$a->advisor_last_name}}",
-                title: "Make an appointment",
-                start: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->start_time}}',
-                end: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->finish_time }}',
-                color: '{{$a->reason_cancel}}' == '' ? ('{{$a->reason}}' == '' ? "#fec627" :
-                    '#45B6AF') : "#ccc",
+            businessHours: {
+                dow: [1, 2, 3, 4, 5], // Monday - Thursday
+                start: '08:00', // start time (8am)
+                end: '17:30', // end time (5pm)
             },
-            @endforeach
-        ],
-        eventRender: function(event, element) {
-            element.attr('href', 'javascript:void(0);');
-            element.click(function() {
-                $("#startTime").html(moment(event.start).format('MMM Do h:mm A'));
-                $("#endTime").html(moment(event.end).format('MMM Do h:mm A'));
-                $("#eventInfo").html(event.description);
-                $("#eventContent").dialog({
-                    modal: true,
-                    title: event.title,
-                    width: 1000
-                });
-                $("#id").val(event.id);
-                $("#category_name").val(event.category_name);
-                $("#advisor_name").val(event.advisor_name);
 
-                if (event.reason != '') { //apm have student
-                    $("#form_first_name").css("display", "inline");
-                    $("#form_last_name").css("display", "inline");
-                    $("#form_asu_id").css("display", "inline");
-                    $("#form_email").css("display", "inline");
-                    $("#form_phone").css("display", "inline");
-                    $("#form_reason").css("display", "inline");
-                    $("#form_phone_call").css("display", "inline");
-                    $("#form_reason").css("display", "inline");
-                    $("#form_reason_cancel").css("display", "none");
-                    if (event.reason_cancel != '') { //apm cancel
-                        $("#form_reason_cancel").css("display", "inline");
-                        $("#reason_cancel").val(event.reason_cancel);
+            hiddenDays: [0, 6], // Hide Sundays and Saturdays
+            events: [
+                @foreach($appointments as $a) {
+                    id: "{{$a->id}}",
+                    category_name: "{{$a->category_name}}",
+                    reason: "{{$a->reason}}",
+                    reason_cancel: "{{$a->reason_cancel}}",
+                    advisor_name: "{{$a->advisor_first_name}}" + " " + "{{$a->advisor_last_name}}",
+                    title: "Make an appointment",
+                    start: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->start_time}}',
+                    end: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->finish_time }}',
+                    color: '{{$a->reason_cancel}}' == '' ? ('{{$a->reason}}' == '' ? "#fec627" :
+                        '#45B6AF') : "#ccc",
+                },
+                @endforeach
+            ],
+            eventRender: function(event, element) {
+                element.attr('href', 'javascript:void(0);');
+                element.click(function() {
+                    $("#startTime").html(moment(event.start).format('MMM Do h:mm A'));
+                    $("#endTime").html(moment(event.end).format('MMM Do h:mm A'));
+                    $("#eventInfo").html(event.description);
+                    $("#eventContent").dialog({
+                        modal: true,
+                        title: event.title,
+                        width: 1000
+                    });
+                    $("#id").val(event.id);
+                    $("#category_name").val(event.category_name);
+                    $("#advisor_name").val(event.advisor_name);
+
+                    if (event.reason != '') { //apm have student
+                        $("#form_first_name").css("display", "inline");
+                        $("#form_last_name").css("display", "inline");
+                        $("#form_asu_id").css("display", "inline");
+                        $("#form_email").css("display", "inline");
+                        $("#form_phone").css("display", "inline");
+                        $("#form_reason").css("display", "inline");
+                        $("#form_phone_call").css("display", "inline");
+                        $("#form_reason").css("display", "inline");
+                        $("#form_reason_cancel").css("display", "none");
+                        if (event.reason_cancel != '') { //apm cancel
+                            $("#form_reason_cancel").css("display", "inline");
+                            $("#reason_cancel").val(event.reason_cancel);
+                        }
+                    } else { //apm new
+                        $("#form_first_name").css("display", "none");
+                        $("#form_last_name").css("display", "none");
+                        $("#form_asu_id").css("display", "none");
+                        $("#form_email").css("display", "none");
+                        $("#form_phone").css("display", "none");
+                        $("#form_reason").css("display", "none");
+                        $("#form_phone_call").css("display", " none");
+                        $("#phone_call").css("display", "none");
+                        $("#form_reason_cancel").css("display", "none");
                     }
-                } else { //apm new
-                    $("#form_first_name").css("display", "none");
-                    $("#form_last_name").css("display", "none");
-                    $("#form_asu_id").css("display", "none");
-                    $("#form_email").css("display", "none");
-                    $("#form_phone").css("display", "none");
-                    $("#form_reason").css("display", "none");
-                    $("#form_phone_call").css("display", " none");
-                    $("#phone_call").css("display", "none");
-                    $("#form_reason_cancel").css("display", "none");
-                }
 
-            });
-        }
+                });
+            }
 
-    })
-});
+        })
+    });
 </script>
 <script>
-$(function() {
-    $("#datepicker").datepicker({
-        beforeShowDay: function(d) {
-            var day = d.getDay();
-            return [(day != 0 && day != 6)];
-        }
+    $(function() {
+        $("#datepicker").datepicker({
+            beforeShowDay: function(d) {
+                var day = d.getDay();
+                return [(day != 0 && day != 6)];
+            }
+        });
+        $('#sltCategory').change(function() {
+            var Id = $('#sltCategory').val();
+            $.ajax({
+                type: "GET",
+                url: '../category-advisor/' + Id,
+                success: function(data) {
+                    $("#sltAdvisor").empty();
+                    data.forEach(function(item) {
+                        $("#sltAdvisor").append("<option value = '" + item.id + "'>" + item.first_name + " " + item.last_name + "</option>");
+                    })
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log('jqXHR:');
+                    console.log(jqXHR);
+                }
+            })
+        });
     });
-    $('#sltCategory').change(function() {
-                var Id = $('#sltCategory').val();
-                $.ajax({
-                    type: "GET",
-                    url: 'category-advisor/' + Id,
-                    success: function(data) {
-                        $("#sltAdvisor").empty();
-                        data.forEach(function(item) {
-                            console.log(item);
-                            $("#sltAdvisor").append("<option value = '" + item.id + "'>" + item.first_name +" " + item.last_name+ "</option>");
-                        })
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.log('jqXHR:');
-                        console.log(jqXHR);
-                    }
-                })
-            });
-});
 </script>
 @endsection

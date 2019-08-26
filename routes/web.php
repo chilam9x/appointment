@@ -38,7 +38,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::resource('appointments', 'Admin\AppointmentsController');
     Route::post('create-appointment', 'Admin\AppointmentsController@postCreate');
     Route::post('create-appointment', 'Admin\AppointmentsController@postCreate');
-    
+
     Route::get('advisor', 'Admin\AdvisorController@index');
     Route::post('create-advisor', 'Admin\AdvisorController@postCreate');
     Route::post('edit-advisor', 'Admin\AdvisorController@postEdit');

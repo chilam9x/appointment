@@ -38,7 +38,7 @@
                                 <div class="form-group">
                                     <label for="email">Advisor:</label>
                                     <select class="form-control" name="advisor_id" id="sltAdvisor">
-                                    <option value="0">All</option>
+                                        <option value="0">All</option>
                                     </select>
                                 </div>
                                 <button type="submit" class="btn btn-warning">Search</button>
@@ -134,18 +134,21 @@
                 hiddenDays: [0, 6], // Hide Sundays and Saturdays
 
                 events: [
-                    @foreach($appointments as $a) {
-                        id: "{{$a->apm_id}}",
-                        category_name: "{{$a->category_name}}",
-                        advisor_name: "{{$a->advisor_first_name}}" + " " + "{{$a->advisor_last_name}}",
-                        reason: "{{$a->reason}}",
-                        reason_cancel: "{{$a->reason_cancel}}",
-                        title: "Make an appointment",
-                        start: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->start_time}}',
-                        end: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->finish_time }}',
-                        color: '{{$a->reason}}' == '' ? "#fec627" : ('{{$a->reason}}' != '' &&
-                            '{{$a->reason_cancel}}' != '') ? "#fec627" : '#45B6AF',
-                    },
+                    @foreach($appointments as $a) 
+                        @if($a -> cancel == 0) 
+                        {
+                                id: "{{$a->apm_id}}",
+                                category_name: "{{$a->category_name}}",
+                                advisor_name: "{{$a->advisor_first_name}}" + " " + "{{$a->advisor_last_name}}",
+                                reason: "{{$a->reason}}",
+                                reason_cancel: "{{$a->reason_cancel}}",
+                                title: "Make an appointment",
+                                start: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->start_time}}',
+                                end: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->finish_time }}',
+                                color: '{{$a->reason}}' == '' ? "#fec627" : ('{{$a->reason}}' != '' &&
+                                    '{{$a->reason_cancel}}' != '') ? "#fec627" : '#45B6AF',
+                        },
+                            @endif
                     @endforeach
                 ],
                 eventRender: function(event, element) {
@@ -231,7 +234,7 @@
                         $("#sltAdvisor").empty();
                         data.forEach(function(item) {
                             console.log(item);
-                            $("#sltAdvisor").append("<option value = '" + item.id + "'>" + item.first_name +" " + item.last_name+ "</option>");
+                            $("#sltAdvisor").append("<option value = '" + item.id + "'>" + item.first_name + " " + item.last_name + "</option>");
                         })
                     },
                     error: function(jqXHR, textStatus, errorThrown) {

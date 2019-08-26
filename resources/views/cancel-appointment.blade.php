@@ -66,7 +66,7 @@
                                             <td>{{date("d-m-Y", strtotime($s->ap_created_at))}}</td>
                                             @if($s->cancel_at==null)
                                             <td><a href="#" data-toggle="modal" data-target="#cancel"
-                                                    onclick="openCancelModal({{$s->id}})">Cancel</a> </td>
+                                                    onclick="openCancelModal({{$s->id}},{{$s->apm_id}})">Cancel</a> </td>
                                             @else
                                             <td></td>
                                             @endif
@@ -96,6 +96,7 @@
             <form class="form-horizontal" action="cancel-appointment" method="POST">
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <input type="hidden" name="student_id" id="student_id" value="">
+                <input type="hidden" name="appointment_id" id="appointment_id" value="">
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="focusedInput">* Reason cancel: </label> <span id="error" class="text-danger"></span>
@@ -136,8 +137,9 @@ $(function() {
 </script>
 @endif
 <script>
-function openCancelModal(student_id) {
+function openCancelModal(student_id,appointment_id) {
     $('#student_id').val(student_id);
+    $('#appointment_id').val(appointment_id);
 }
 </script>
 @endsection

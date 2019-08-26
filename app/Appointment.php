@@ -14,14 +14,12 @@ class Appointment extends Model
     //raymond
     public static function getListAll()
     {
-        $res = DB::table('student as s')
-            ->rightJoin('student_appointment as sa', 's.id', '=', 'sa.student_id')
-            ->rightJoin('appointments as a', 'a.id', '=', 'sa.appointment_id')
+            $res = DB::table('appointments as a')
+            ->leftJoin('student_appointment as sa', 'a.id', '=', 'sa.appointment_id')
+            ->leftJoin('student as s', 's.id', '=', 'sa.student_id')
             ->join('category as c', 'c.id', '=', 'a.category_id')
             ->join('advisor as as', 'as.id', '=', 'a.advisor_id')
             ->select("a.id as apm_id", 's.*', 'a.id as ap_id', 'a.date', 'a.start_time', 'a.finish_time', 'a.created_at as ap_created_at', 'c.name as category_name', 'as.first_name as advisor_first_name', 'as.last_name as advisor_last_name')
-            ->where('s.cancel',0)
-            ->orderBy('a.id', 'desc')
             ->get();
         return $res;
     }
@@ -102,6 +100,7 @@ class Appointment extends Model
                 'email' => $request->email,
                 'phone' => $request->phone,
                 'reason' => $request->reason,
+                'cancel'=>0,
                 'phone_call' => $request->phone_call,
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ]
@@ -125,6 +124,16 @@ class Appointment extends Model
     }
     public static function cancel($request)
     {
+        dd($request);
+        $res = DB::table('appointments as a')
+        ->rightJoin('student_appointment as sa', 'a.id', '=', 'sa.appointment_id')
+        ->rightJoin('student as s', 's.id', '=', 'sa.student_id')
+        ->where('s.id',$request->appointment_id)
+        ->update(
+            [
+                'cancel'=>2,
+            ]
+        );
         DB::table('student')
             ->where('id', $request->student_id)
             ->update(
@@ -134,6 +143,7 @@ class Appointment extends Model
                     'cancel_at' => date('Y-m-d h:i:s'),
                 ]
             );
+            
         self::findEmailCancel($request->student_id, $request->reason_cancel);
         return 200;
     }
