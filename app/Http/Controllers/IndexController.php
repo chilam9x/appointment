@@ -13,17 +13,18 @@ class IndexController extends Controller
     //page index
     public function index()
     {
-        return view('index');
+        return view('user.index');
     }
     //page appointment
     public function appointment()
     {
-        $appointments = Appointment::getListAll();
+        $appointment = Appointment::getListAll();
+        $appointments = Appointment::getListCalendar();
         $category = Category::getList();
         $advisor = Advisor::getList();
         $category_id = '';
         $advisor_id = '';
-        return view('appointment', compact('appointments', 'category', 'advisor', 'category_id', 'advisor_id'));
+        return view('user.appointment', compact('appointments','appointment', 'category', 'advisor', 'category_id', 'advisor_id'));
     }
     public function searchAppointment(Request $request)
     {
@@ -33,7 +34,7 @@ class IndexController extends Controller
             $advisor = Advisor::getList();
             $category_id = $request->category_id;
             $advisor_id = $request->advisor_id;
-            return view('appointment', compact('appointments', 'category', 'advisor', 'category_id', 'advisor_id'));
+            return view('user.appointment', compact('appointments', 'category', 'advisor', 'category_id', 'advisor_id'));
         } catch (\Exception $ex) {
             return $ex;
         }
@@ -58,7 +59,7 @@ class IndexController extends Controller
     {
         $student = null;
         $error_code=0;
-        return view('cancel-appointment', compact('student','error_code'));
+        return view('user.cancel-appointment', compact('student','error_code'));
     }
     public function checkStudent(Request $request)
     {
@@ -66,10 +67,10 @@ class IndexController extends Controller
             $student = Student::checkStudent($request);
             if ($student->count() == 0) {
                 $error_code=5;
-                return view('cancel-appointment', compact('student','error_code'));
+                return view('user.cancel-appointment', compact('student','error_code'));
             } else {
                 $error_code=0;
-                return view('cancel-appointment', compact('student','error_code'));
+                return view('user.cancel-appointment', compact('student','error_code'));
             }
         } catch (\Exception $ex) {
             return $ex;
@@ -82,17 +83,17 @@ class IndexController extends Controller
             $error_code=0;
             if ($res == 200) {
                 $student = null;
-                return view('cancel-appointment', compact('student','error_code'));
+                return view('user.cancel-appointment', compact('student','error_code'));
             }
         } catch (\Exception $ex) {
             return $ex;
         }
     }
     //ajax
-    public function getCategoryAdvisor($id)
+    public function searchCategoryAdvisor(Request $request)
     {
         try {
-            $res = Advisor::getCategoryAdvisor($id);
+            $res = Advisor::searchCategoryAdvisor($request->id);
             return $res;
         } catch (\Exception $ex) {
             return $ex;

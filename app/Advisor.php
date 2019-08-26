@@ -54,7 +54,7 @@ class Advisor extends Model
             );
         return 200;
     }
-    public static function getCategoryAdvisor($id)
+    public static function searchCategoryAdvisor($id)
     {
         $data = DB::table('advisor')
             ->where('category_id', $id)
