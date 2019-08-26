@@ -2,6 +2,7 @@
 Route::get('/', 'IndexController@index');
 
 Route::get('appointment', 'IndexController@appointment');
+Route::get('get-appointment', 'IndexController@getAppointment');
 Route::post('search-appointment', 'IndexController@searchAppointment');
 Route::post('add-student', 'IndexController@postAddStudent');
 Route::get('search-category-advisor', 'IndexController@searchCategoryAdvisor');

@@ -18,6 +18,19 @@ class Appointment extends Model
             ->get();
         return $res;
     }
+    public static function getAppointment($id)
+    {
+        $res = DB::table('appointments as a')
+            ->leftJoin('student_appointment as sa', 'a.id', '=', 'sa.appointment_id')
+            ->leftJoin('student as s', 's.id', '=', 'sa.student_id')
+            ->join('category as c', 'c.id', '=', 'a.category_id')
+            ->join('advisor as as', 'as.id', '=', 'a.advisor_id')
+            ->where('a.id',$id)
+            ->select("a.id as apm_id", 's.*', 'a.id as ap_id', 'a.date', 'a.start_time', 'a.finish_time', 'a.created_at as ap_created_at', 'c.name as category_name', 'as.first_name as advisor_first_name', 'as.last_name as advisor_last_name')
+            ->orderBy('a.id','desc')
+            ->get();
+        return $res;
+    }
     public static function getListAll()
     {
         $res = DB::table('appointments as a')

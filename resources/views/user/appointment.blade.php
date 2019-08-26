@@ -158,7 +158,23 @@
                     $("#id").val(event.id);
                     $("#category_name").val(event.category_name);
                     $("#advisor_name").val(event.advisor_name);
-
+                    $.ajax({
+                        type: "GET",
+                        url: 'get-appointment',
+                        data: {
+                            id: event.id
+                        },
+                        success: function(data) {
+                            data.forEach(function(item) {
+                                console.log('i:');
+                                console.log(item.id);
+                            })
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.log('jqXHR:');
+                            console.log(jqXHR);
+                        }
+                    })
                     if (event.reason != '') {
                         $("#btnSave").css("display", "none");
                         $("#first_name").css("display", "none");
@@ -223,7 +239,9 @@
             $.ajax({
                 type: "GET",
                 url: 'search-category-advisor',
-                data:{id:Id},
+                data: {
+                    id: Id
+                },
                 success: function(data) {
                     $("#sltAdvisor").empty();
                     data.forEach(function(item) {
