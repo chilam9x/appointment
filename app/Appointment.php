@@ -11,7 +11,6 @@ use Mail;
 class Appointment extends Model
 {
 
-    //raymond
     public static function getListCalendar()
     {
         $res = DB::table('appointments as a')
@@ -96,6 +95,7 @@ class Appointment extends Model
                 'start_time' => $request->start_time,
                 'finish_time' => date('H:i', $finish_time),
                 'created_at' => Carbon::now()->format('Y-m-d'),
+                'status'=>0,//
             ]
         );
         return 200;
@@ -108,6 +108,7 @@ class Appointment extends Model
             ->where('id', $appointment->id)
             ->update(
                 [
+                    'status'=>1,//apm new
                     'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 ]
             );
@@ -136,21 +137,18 @@ class Appointment extends Model
         $subject = "Request an appointment";
         $message = 'Student name: ' . $request->first_name . ' ' . $request->last_name . ', ASU ID: ' . $request->asu_id . ', Email: ' . $request->email . ', reason ' . $request->reason . ', day ' . $appointment->date . ' from : ' . $appointment->start_time . ' to: ' . $appointment->finish_time;
 
-        Mail::to($student_email)->send(new SendMail($subject, $message));
-        Mail::to($advisor_email)->send(new SendMail($subject, $message));
+       // Mail::to($student_email)->send(new SendMail($subject, $message));
+      //  Mail::to($advisor_email)->send(new SendMail($subject, $message));
 
         return 200;
     }
     public static function cancel($request)
     {
-        dd($request);
         $res = DB::table('appointments as a')
-            ->rightJoin('student_appointment as sa', 'a.id', '=', 'sa.appointment_id')
-            ->rightJoin('student as s', 's.id', '=', 'sa.student_id')
-            ->where('s.id', $request->appointment_id)
+            ->where('a.id', $request->appointment_id)
             ->update(
                 [
-                    'cancel' => 2,
+                    'status' => 0,
                 ]
             );
         DB::table('student')
@@ -163,7 +161,7 @@ class Appointment extends Model
                 ]
             );
 
-        self::findEmailCancel($request->student_id, $request->reason_cancel);
+       // self::findEmailCancel($request->student_id, $request->reason_cancel);
         return 200;
     }
     public static function findEmailCancel($id, $reason_cancel)

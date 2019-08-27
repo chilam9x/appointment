@@ -1,11 +1,12 @@
 <?php
+//Page for users
 Route::get('/', 'IndexController@index');
 
 Route::get('appointment', 'IndexController@appointment');
 Route::get('get-appointment', 'IndexController@getAppointment');
 Route::post('search-appointment', 'IndexController@searchAppointment');
 Route::post('add-student', 'IndexController@postAddStudent');
-Route::get('search-category-advisor', 'IndexController@searchCategoryAdvisor');
+Route::get('search-category-advisor', 'IndexController@searchCategoryAdvisor')->name('search-category-advisor');
 
 Route::get('cancel-appointment', 'IndexController@cancelAppointment');
 Route::post('cancel-appointment', 'IndexController@postCancelAppointment');
@@ -28,7 +29,7 @@ $this->get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm'
 $this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('auth.password.reset');
 $this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 $this->post('password/reset', 'Auth\ResetPasswordController@reset')->name('auth.password.reset');
-
+//Page for admin
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('/home', 'HomeController@index');
     Route::resource('roles', 'Admin\RolesController');
