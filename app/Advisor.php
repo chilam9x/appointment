@@ -15,6 +15,16 @@ class Advisor extends Model
         ->where('a.deleted_at', null)->get();
         return $res;
     }
+    public static function getList_Category($category_id)
+    {
+        $res = DB::table('advisor as a')
+        ->join('category as c','c.id','=','a.category_id')
+        ->select('a.*','c.name as category_name')
+        ->where('a.deleted_at', null)
+        ->where('c.id',$category_id)
+        ->get();
+        return $res;
+    }
     public static function postCreate($request)
     {
         DB::table('advisor')->insert(
@@ -58,6 +68,7 @@ class Advisor extends Model
     {
         $data = DB::table('advisor')
             ->where('category_id', $id)
+            ->where('deleted_at',null)
             ->get();
         return $data;
     }

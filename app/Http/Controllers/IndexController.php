@@ -18,26 +18,21 @@ class IndexController extends Controller
     //page appointment
     public function appointment()
     {
-        $appointment = Appointment::getListAll();
         $appointments = Appointment::getListCalendar();
         $category = Category::getList();
         $advisor = Advisor::getList();
         $category_id = '';
         $advisor_id = '';
-        return view('user.appointment', compact('appointments','appointment', 'category', 'advisor', 'category_id', 'advisor_id'));
+        return view('user.appointment', compact('appointments', 'category', 'advisor', 'category_id', 'advisor_id'));
     }
     public function searchAppointment(Request $request)
     {
-        try {
-            $appointments = Appointment::searchAppointment($request);
-            $category = Category::getList();
-            $advisor = Advisor::getList();
-            $category_id = $request->category_id;
-            $advisor_id = $request->advisor_id;
-            return view('user.appointment', compact('appointments', 'category', 'advisor', 'category_id', 'advisor_id'));
-        } catch (\Exception $ex) {
-            return $ex;
-        }
+        $category_id = $request->category_id;
+        $advisor_id = $request->advisor_id;
+        $category = Category::getList();
+        $advisor = Advisor::getList_Category($category_id);
+        $appointments=Appointment::searchAppointment($request);
+        return view('user.appointment', compact('appointments', 'category', 'advisor', 'category_id', 'advisor_id'));
     }
     public function postAddStudent(Request $request)
     {

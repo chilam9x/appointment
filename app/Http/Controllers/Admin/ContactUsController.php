@@ -11,7 +11,7 @@ class ContactUsController extends Controller
     //get
     public function index()
     {
-        return view('contact-us');
+        return view('user.contact-us');
     }
     public function getContactUs()
     {

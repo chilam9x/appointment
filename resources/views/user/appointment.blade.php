@@ -29,6 +29,7 @@
                                 <div class="form-group">
                                     <label for="pwd">Category:</label>
                                     <select class="form-control" name="category_id" id='sltCategory'>
+                                        <option value="0">Please choose</option>
                                         @foreach($category as $c)
                                         <option value="{{$c->id}}" {{$c->id==$category_id ? "selected": ''}}>
                                             {{$c->name}} </option>
@@ -38,6 +39,13 @@
                                 <div class="form-group">
                                     <label for="email">Advisor:</label>
                                     <select class="form-control" name="advisor_id" id="sltAdvisor">
+                                        <option value="0">Please choose</option>
+                                        @if($advisor != '')
+                                            @foreach($advisor as $a)
+                                            <option value="{{$a->id}}" {{$a->id==$advisor_id ? "selected": ''}}>
+                                                {{$a->first_name}} {{$a->last_name}}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                 </div>
                                 <button type="submit" class="btn btn-warning">Search</button>
@@ -60,14 +68,14 @@
             <input type="hidden" id="id" name="id" value="">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <h5>Advisor:</h5>
-                    <input class="form-control" id="advisor_name" type="text" disabled>
+                    <h5>Category:</h5>
+                    <input class="form-control" id="category_name" type="text" disabled>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                    <h5>Category:</h5>
-                    <input class="form-control" id="category_name" type="text" disabled>
+                    <h5>Advisor:</h5>
+                    <input class="form-control" id="advisor_name" type="text" disabled>
                 </div>
             </div>
             <div class="col-sm-6" id="first_name">
@@ -135,6 +143,8 @@
                 events: [
                     @foreach($appointments as $a) {
                         id: "{{$a->id}}",
+                        category_name: "{{$a->name}}",
+                        advisor_name: "{{$a->first_name}}" + " " + "{{$a->last_name}}",
                         status: "{{$a->status}}",
                         title: "Make an appointment",
                         start: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->start_time}}',
@@ -155,6 +165,8 @@
                             width: 1000
                         });
                         $("#id").val(event.id);
+                        $("#category_name").val(event.category_name);
+                        $("#advisor_name").val(event.advisor_name);
                         if (event.status == 0) {
                             $("#btnSave").css("display", "inline");
                             $("#first_name").css("display", "inline");
@@ -192,29 +204,6 @@
                     'value': h + ':' + m
                 });
             });
-
-            var sltCategory_id = $('#sltCategory').val();
-            var sltAdvisor_id = $('#sltAdvisor').val();
-            console.log(sltAdvisor_id,sltCategory_id);
-            $.ajax({
-                type: "GET",
-                url: 'search-appointment',
-                data: {
-                    category_id: sltCategory_id,
-                    advisor_id:sltAdvisor_id,
-                },
-                success: function(data) {
-                    data.forEach(function(item) {
-                        console.log('i:');
-                        console.log(item.id);
-                    })
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log('jqXHR:');
-                    console.log(jqXHR);
-                }
-            })
-
         });
     </script>
     <script>
@@ -246,7 +235,6 @@
                     success: function(data) {
                         $("#sltAdvisor").empty();
                         data.forEach(function(item) {
-                            console.log(item);
                             $("#sltAdvisor").append("<option value = '" + item.id +
                                 "'>" + item.first_name + " " + item.last_name +
                                 "</option>");
