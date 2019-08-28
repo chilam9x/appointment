@@ -41,10 +41,10 @@
                                     <select class="form-control" name="advisor_id" id="sltAdvisor">
                                         <option value="0">Please choose</option>
                                         @if($advisor != '')
-                                            @foreach($advisor as $a)
-                                            <option value="{{$a->id}}" {{$a->id==$advisor_id ? "selected": ''}}>
-                                                {{$a->first_name}} {{$a->last_name}}</option>
-                                            @endforeach
+                                        @foreach($advisor as $a)
+                                        <option value="{{$a->id}}" {{$a->id==$advisor_id ? "selected": ''}}>
+                                            {{$a->first_name}} {{$a->last_name}}</option>
+                                        @endforeach
                                         @endif
                                     </select>
                                 </div>
@@ -149,7 +149,7 @@
                         title: "Make an appointment",
                         start: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->start_time}}',
                         end: moment('{{$a->date}}').format('YYYY-MM-DD') + ' {{$a->finish_time }}',
-                        color: '{{$a->status}}' == '0' ? "#fec627" : '#45B6AF',
+                        color: "#fec627",
                     },
                     @endforeach
                 ],
@@ -167,27 +167,6 @@
                         $("#id").val(event.id);
                         $("#category_name").val(event.category_name);
                         $("#advisor_name").val(event.advisor_name);
-                        if (event.status == 0) {
-                            $("#btnSave").css("display", "inline");
-                            $("#first_name").css("display", "inline");
-                            $("#last_name").css("display", "inline");
-                            $("#asu_id").css("display", "inline");
-                            $("#email").css("display", "inline");
-                            $("#phone").css("display", "inline");
-                            $("#reason").css("display", "inline");
-                            $("#phone_call").css("display", " inline-table");
-                        } else if (event.status == 1) {
-                            $("#btnSave").css("display", "none");
-                            $("#first_name").css("display", "none");
-                            $("#last_name").css("display", "none");
-                            $("#asu_id").css("display", "none");
-                            $("#email").css("display", "none");
-                            $("#phone").css("display", "none");
-                            $("#reason").css("display", "none");
-                            $("#phone_call").css("display", "none");
-                            $("#reason").css("display", "none");
-                        }
-
                     });
                 }
             });

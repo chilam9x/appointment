@@ -19,6 +19,7 @@ class Appointment extends Model
             ->select('a.*', 'c.name', 'ad.first_name', 'ad.last_name')
             ->where('c.deleted_at', null)
             ->where('ad.deleted_at', null)
+            ->where('a.status', 0)
             ->get();
         return $res;
     }
@@ -48,8 +49,8 @@ class Appointment extends Model
     }
     public static function searchAppointment($request)
     {
-        $category_id=$request->category_id;
-        $advisor_id=$request->advisor_id;
+        $category_id = $request->category_id;
+        $advisor_id = $request->advisor_id;
 
         $res = DB::table('appointments as a')
             ->leftJoin('category as c', 'c.id', '=', 'a.category_id')
@@ -57,13 +58,11 @@ class Appointment extends Model
             ->select('a.*', 'c.name', 'ad.first_name', 'ad.last_name')
             ->where('c.deleted_at', null)
             ->where('ad.deleted_at', null);
-        if($category_id!=0)
-        {
-            $res->where('c.id',$category_id);
+        if ($category_id != 0) {
+            $res->where('c.id', $category_id);
         }
-        if($advisor_id!=0)
-        {
-            $res->where('ad.id',$advisor_id);
+        if ($advisor_id != 0) {
+            $res->where('ad.id', $advisor_id);
         }
         return $res->get();
     }
@@ -120,8 +119,8 @@ class Appointment extends Model
         $subject = "Request an appointment";
         $message = 'Student name: ' . $request->first_name . ' ' . $request->last_name . ', ASU ID: ' . $request->asu_id . ', Email: ' . $request->email . ', reason ' . $request->reason . ', day ' . $appointment->date . ' from : ' . $appointment->start_time . ' to: ' . $appointment->finish_time;
 
-        // Mail::to($student_email)->send(new SendMail($subject, $message));
-        //  Mail::to($advisor_email)->send(new SendMail($subject, $message));
+        Mail::to($student_email)->send(new SendMail($subject, $message));
+        Mail::to($advisor_email)->send(new SendMail($subject, $message));
 
         return 200;
     }
@@ -144,7 +143,7 @@ class Appointment extends Model
                 ]
             );
 
-        // self::findEmailCancel($request->student_id, $request->reason_cancel);
+        self::findEmailCancel($request->student_id, $request->reason_cancel);
         return 200;
     }
     public static function findEmailCancel($id, $reason_cancel)
