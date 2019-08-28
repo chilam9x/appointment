@@ -5,7 +5,7 @@ Route::get('/', 'IndexController@index');
 Route::get('appointment', 'IndexController@appointment');
 Route::get('get-appointment', 'IndexController@getAppointment');
 Route::post('add-student', 'IndexController@postAddStudent');
-Route::post('search-appointment', 'IndexController@searchAppointment');
+Route::post('search-appointment', 'IndexController@searchAppointment')->name('search-appointment');
 Route::get('search-category-advisor', 'IndexController@searchCategoryAdvisor')->name('search-category-advisor');
 
 Route::get('cancel-appointment', 'IndexController@cancelAppointment');

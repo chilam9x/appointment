@@ -31,20 +31,19 @@ class IndexController extends Controller
         $advisor_id = $request->advisor_id;
         $category = Category::getList();
         $advisor = Advisor::getList_Category($category_id);
-        $appointments=Appointment::searchAppointment($request);
+        $appointments = Appointment::searchAppointment($request);
         return view('user.appointment', compact('appointments', 'category', 'advisor', 'category_id', 'advisor_id'));
     }
     public function postAddStudent(Request $request)
     {
         try {
             $res = Appointment::postAddStudent($request);
-            if ($res == 200) {
-                return back()
-                    ->with('success', 'You have added a successful appointment');
-            } else {
-                return back()
-                    ->with('fail', 'You have added a failed appointment');
-            }
+            $appointments = Appointment::getListCalendar();
+            $category = Category::getList();
+            $advisor = Advisor::getList();
+            $category_id = '';
+            $advisor_id = '';
+            return view('user.appointment', compact('appointments', 'category', 'advisor', 'category_id', 'advisor_id'));
         } catch (\Exception $ex) {
             return $ex;
         }
@@ -53,19 +52,19 @@ class IndexController extends Controller
     public function cancelAppointment()
     {
         $student = null;
-        $error_code=0;
-        return view('user.cancel-appointment', compact('student','error_code'));
+        $error_code = 0;
+        return view('user.cancel-appointment', compact('student', 'error_code'));
     }
     public function checkStudent(Request $request)
     {
         try {
             $student = Student::checkStudent($request);
             if ($student->count() == 0) {
-                $error_code=5;
-                return view('user.cancel-appointment', compact('student','error_code'));
+                $error_code = 5;
+                return view('user.cancel-appointment', compact('student', 'error_code'));
             } else {
-                $error_code=0;
-                return view('user.cancel-appointment', compact('student','error_code'));
+                $error_code = 0;
+                return view('user.cancel-appointment', compact('student', 'error_code'));
             }
         } catch (\Exception $ex) {
             return $ex;
@@ -75,10 +74,10 @@ class IndexController extends Controller
     {
         try {
             $res = Appointment::cancel($request);
-            $error_code=0;
+            $error_code = 0;
             if ($res == 200) {
                 $student = null;
-                return view('user.cancel-appointment', compact('student','error_code'));
+                return view('user.cancel-appointment', compact('student', 'error_code'));
             }
         } catch (\Exception $ex) {
             return $ex;

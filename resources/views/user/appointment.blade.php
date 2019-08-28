@@ -24,7 +24,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="col-sm-12">
-                            <form class="form-inline" action="search-appointment" method="POST">
+                            <form class="form-inline" action="{{url('search-appointment')}}" method="POSt">
                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                                 <div class="form-group">
                                     <label for="pwd">Category:</label>
