@@ -57,7 +57,7 @@ class Appointment extends Model
             ->leftJoin('advisor as ad', 'ad.id', '=', 'a.advisor_id')
             ->select('a.*', 'c.name', 'ad.first_name', 'ad.last_name')
             ->where('c.deleted_at', null)
-            ->where('ad.deleted_at', null);
+            ->where('ad.deleted_at', null)->where('a.status', 0);
         if ($category_id != 0) {
             $res->where('c.id', $category_id);
         }
