@@ -5,7 +5,7 @@
 <!--cancel appointment-->
 <div id="cancel_appointment">
     <h2 class="text-center">CANCEL APPOINTMENT</h2>
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="col-sm-12 ">
                 @if (Session::has('fail'))
@@ -36,13 +36,9 @@
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th>ASU ID</th>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Reason</th>
                                             <th>Category</th>
                                             <th>Advisor</th>
+                                            <th>Reason</th>
                                             <th>Date</th>
                                             <th>Time</th>
                                             <th>Phone call</th>
@@ -53,13 +49,9 @@
                                     <tbody>
                                         @foreach($student as $s)
                                         <tr>
-                                            <td>{{$s->asu_id}}</td>
-                                            <td>{{$s->first_name}} {{$s->last_name}}</td>
-                                            <td>{{$s->email}}</td>
-                                            <td>{{$s->phone}}</td>
-                                            <td>{{$s->reason}}</td>
                                             <td>{{$s->category_name}}</td>
                                             <td>{{$s->advisor_first_name}} {{$s->advisor_last_name}}</td>
+                                            <td>{{$s->reason}}</td>
                                             <td>{{$s->date}}</td>
                                             <td> Form {{$s->start_time}} to {{$s->finish_time}}</td>
                                             <td>{{($s->phone_call==1) ? 'yes' :''}}</td>
