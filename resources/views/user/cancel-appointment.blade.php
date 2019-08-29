@@ -8,6 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 ">
+                <span class="bg-success text-center" id="noti-success" style="display:none"> You have successfully cancel an appointment</span>
                 @if (Session::has('fail'))
                 <span class="bg-danger"> {{ Session::get('fail') }}</span>
                 @endif
@@ -122,11 +123,18 @@
     </div>
 </div>
 @if( $error_code == 5)
-<script>
-$(function() {
-    $('#myModal').modal('show');
-});
-</script>
+    <script>
+    $(function() {
+        $('#myModal').modal('show');
+    });
+    </script>
+@endif
+@if( $success == 1)
+    <script>
+        $(function() {
+            $('#noti-success').css("display", "block");
+        });
+    </script>
 @endif
 <script>
 function openCancelModal(student_id,appointment_id) {

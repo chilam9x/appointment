@@ -8,6 +8,8 @@
 <div id="appointment">
     <h2 class="text-center">REQUEST AN APPOINTMENT</h2>
     <div class="text-center">
+        <span class="bg-success text-center" id="noti-success" style="display:none"> You have successfully schedule an appointment</span>
+
         @if (Session::has('fail'))
         <span class="bg-danger text-center"> {{ Session::get('fail') }}</span>
         @endif
@@ -122,6 +124,13 @@
             </div>
         </form>
     </div>
+    @if( $success == 1)
+    <script>
+        $(function() {
+            $('#noti-success').css("display", "block");
+        });
+    </script>
+    @endif
     <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.1.0/fullcalendar.min.js'></script>
     <script>

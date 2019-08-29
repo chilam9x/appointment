@@ -12,7 +12,7 @@
 <span class="bg-danger"> {{ Session::get('fail') }}</span>
 @endif
 @if (Session::has('success'))
-<span class="bg-success"> {{ Session::get('success') }}</span>
+<span class="bg-success" > {{ Session::get('success') }}</span>
 @endif
 <p>
     <button type="button" class="btn btn-success =" data-toggle="modal" data-target="#create">@lang('quickadmin.qa_add_new')</button>
