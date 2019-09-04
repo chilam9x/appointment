@@ -7,9 +7,8 @@
 <!-- Appointment-->
 <div id="appointment">
     <h2 class="text-center">REQUEST AN APPOINTMENT</h2>
-    <div class="text-center">
-        <span class="bg-success text-center" id="noti-success" style="display:none"> You have successfully schedule an appointment</span>
-
+    <div class="text-center container">
+    <span class="bg-success col-sm-12" id="noti-success" > You have successfully schedule an appointment</span>
         @if (Session::has('fail'))
         <span class="bg-danger text-center"> {{ Session::get('fail') }}</span>
         @endif

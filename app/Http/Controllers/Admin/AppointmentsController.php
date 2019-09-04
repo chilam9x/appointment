@@ -6,10 +6,7 @@ use App\Advisor;
 use App\Appointment;
 use App\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreAppointmentsRequest;
-use App\Http\Requests\Admin\UpdateAppointmentsRequest;
 
 class AppointmentsController extends Controller
 {
