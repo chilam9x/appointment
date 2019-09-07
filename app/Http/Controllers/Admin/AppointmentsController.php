@@ -39,10 +39,10 @@ class AppointmentsController extends Controller
             $res = Appointment::postCreate($request);
             if ($res == 200) {
                 return back()
-                    ->with('success', 'You have successfully create appointment');
+                    ->with('success', 'You have successfully scheduled an appointment');
             } else {
                 return back()
-                    ->with('fail', 'You have create failed appointment');
+                    ->with('fail', 'You have successfully scheduled an appointment');
             }
         } catch (\Exception $ex) {
             return $ex;

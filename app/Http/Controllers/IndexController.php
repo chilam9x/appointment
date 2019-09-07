@@ -18,7 +18,7 @@ class IndexController extends Controller
     //page appointment
     public function appointment()
     {
-        $appointments = Appointment::getListCalendar();
+        $appointments = '';
         $category = Category::getList();
         $advisor = Advisor::getList();
         $category_id = '';
@@ -40,7 +40,7 @@ class IndexController extends Controller
     {
         try {
             $res = Appointment::postAddStudent($request);
-            $appointments = Appointment::getListCalendar();
+            $appointments = '';
             $category = Category::getList();
             $advisor = Advisor::getList();
             $category_id = '';

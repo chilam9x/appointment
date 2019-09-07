@@ -7,6 +7,7 @@
     <title>An appointment</title>
 </head>
 <body>
-    {{$e_message}}
+{{$e_message}}
+
 </body>
 </html>

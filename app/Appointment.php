@@ -117,7 +117,7 @@ class Appointment extends Model
         $student_email = $request->email;
         $advisor_email = $advisor->email;
         $subject = "Request an appointment";
-        $message = 'Student name: ' . $request->first_name . ' ' . $request->last_name . ', ASU ID: ' . $request->asu_id . ', Email: ' . $request->email . ', reason ' . $request->reason . ', day ' . $appointment->date . ' from : ' . $appointment->start_time . ' to: ' . $appointment->finish_time;
+        $message = '<p> This is a confirmation email to your appointment with: ' . $advisor->first_name . ' ' . $advisor->last_name . ' on ' . $appointment->date. ' from  ' . $appointment->start_time . ' to ' . $appointment->finish_time . ' . If you have any additional questions, use the contact details below to get in touch with us. </p>     <p>To cancel or reschedule your appointment before the scheduled time, please click: cancellation page URL</p><p>Looking forward to your present</p>' ;
 
         Mail::to($student_email)->send(new SendMail($subject, $message));
         Mail::to($advisor_email)->send(new SendMail($subject, $message));
