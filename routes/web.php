@@ -3,10 +3,8 @@
 Route::get('/', 'IndexController@index');
 
 Route::get('appointment', 'IndexController@appointment');
-Route::get('get-appointment', 'IndexController@getAppointment');
 Route::post('add-student', 'IndexController@postAddStudent');
 Route::post('search-appointment', 'IndexController@searchAppointment')->name('search-appointment');
-Route::get('search-category-advisor', 'IndexController@searchCategoryAdvisor')->name('search-category-advisor');
 
 Route::get('cancel-appointment', 'IndexController@cancelAppointment');
 Route::post('cancel-appointment', 'IndexController@postCancelAppointment');
@@ -54,4 +52,8 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::get('contact-us', 'Admin\ContactUsController@getContactUs')->name('admin.contact-us');
 
     Route::get('student', 'Admin\StudentController@index');
+});
+//action ajax
+Route::group(['prefix' => 'ajax'], function () {
+    Route::get('search-category-advisor', 'IndexController@searchCategoryAdvisor')->name('search-category-advisor');
 });

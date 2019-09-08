@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SendMail extends Mailable
+class CancelMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -33,6 +33,12 @@ class SendMail extends Mailable
     {
         $e_subject=$this->sub;
         $e_message=$this->mes;
-        return $this->view('email.sendmail',compact("e_message"));
+        return $this->from('requestappointment.sp@gmail.com', 'Mail Cancel Request')
+        ->subject('Cancel an appointment')
+        ->with([
+            'name' => 'Request an appointment',
+            'link' => 'https://apm.taybol.com/appointment'
+        ])
+        ->view('email.cancel-email',compact("e_message"));
     }
 }

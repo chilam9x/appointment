@@ -2,7 +2,8 @@
 
 namespace App;
 
-use App\Mail\SendMail;
+use App\Mail\CancelMail;
+use App\Mail\RequestMail;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -10,7 +11,7 @@ use Mail;
 
 class Appointment extends Model
 {
-
+    //show apm in canlendar(user,admin)
     public static function getListCalendar()
     {
         $res = DB::table('appointments as a')
@@ -23,19 +24,7 @@ class Appointment extends Model
             ->get();
         return $res;
     }
-    public static function getAppointment($id)
-    {
-        $res = DB::table('appointments as a')
-            ->leftJoin('student_appointment as sa', 'a.id', '=', 'sa.appointment_id')
-            ->leftJoin('student as s', 's.id', '=', 'sa.student_id')
-            ->join('category as c', 'c.id', '=', 'a.category_id')
-            ->join('advisor as as', 'as.id', '=', 'a.advisor_id')
-            ->where('a.id', $id)
-            ->select("a.id as apm_id", 's.*', 'a.id as ap_id', 'a.date', 'a.start_time', 'a.finish_time', 'a.created_at as ap_created_at', 'c.name as category_name', 'as.first_name as advisor_first_name', 'as.last_name as advisor_last_name')
-            ->orderBy('a.id', 'desc')
-            ->get();
-        return $res;
-    }
+    //show list apm (admin)
     public static function getListAll()
     {
         $res = DB::table('appointments as a')
@@ -44,9 +33,11 @@ class Appointment extends Model
             ->join('category as c', 'c.id', '=', 'a.category_id')
             ->join('advisor as as', 'as.id', '=', 'a.advisor_id')
             ->select("a.id as apm_id", 's.*', 'a.id as ap_id', 'a.date', 'a.start_time', 'a.finish_time', 'a.created_at as ap_created_at', 'c.name as category_name', 'as.first_name as advisor_first_name', 'as.last_name as advisor_last_name')
+            ->orderBy('a.id', 'desc')
             ->get();
         return $res;
     }
+    //search apm with category & advisor(user)
     public static function searchAppointment($request)
     {
         $category_id = $request->category_id;
@@ -66,6 +57,7 @@ class Appointment extends Model
         }
         return $res->get();
     }
+    //create new apm(admin)
     public static function postCreate($request)
     {
         $finish_time = strtotime("+30 minutes", strtotime($request->start_time));
@@ -77,11 +69,12 @@ class Appointment extends Model
                 'start_time' => $request->start_time,
                 'finish_time' => date('H:i', $finish_time),
                 'created_at' => Carbon::now()->format('Y-m-d'),
-                'status' => 0, //
+                'status' => 0, //apm show
             ]
         );
         return 200;
     }
+    //add info student, send mail (user)
     public static function postAddStudent($request)
     {
         $appointment = DB::table('appointments')->where('id', $request->id)->first();
@@ -90,7 +83,7 @@ class Appointment extends Model
             ->where('id', $appointment->id)
             ->update(
                 [
-                    'status' => 1, //apm new
+                    'status' => 1, //apm hide(haved student apm)
                     'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 ]
             );
@@ -117,20 +110,21 @@ class Appointment extends Model
         $student_email = $request->email;
         $advisor_email = $advisor->email;
         $subject = "Request an appointment";
-        $message = '<p> This is a confirmation email to your appointment with: ' . $advisor->first_name . ' ' . $advisor->last_name . ' on ' . $appointment->date. ' from  ' . $appointment->start_time . ' to ' . $appointment->finish_time . ' . If you have any additional questions, use the contact details below to get in touch with us. </p>     <p>To cancel or reschedule your appointment before the scheduled time, please click: cancellation page URL</p><p>Looking forward to your present</p>' ;
+        $message = 'This is a confirmation email to your appointment with: ' . $advisor->first_name . ' ' . $advisor->last_name . ' on ' . $appointment->date. ' from  ' . $appointment->start_time . ' to ' . $appointment->finish_time ;
 
-        Mail::to($student_email)->send(new SendMail($subject, $message));
-        Mail::to($advisor_email)->send(new SendMail($subject, $message));
+        Mail::to($student_email)->send(new RequestMail($subject, $message));
+        Mail::to($advisor_email)->send(new RequestMail($subject, $message));
 
         return 200;
     }
+    //cancel apm, send mail(user)
     public static function cancel($request)
     {
         $res = DB::table('appointments as a')
             ->where('a.id', $request->appointment_id)
             ->update(
                 [
-                    'status' => 0,
+                    'status' => 0,//apm show
                 ]
             );
         DB::table('student')
@@ -163,8 +157,8 @@ class Appointment extends Model
             $subject = "Cancel an appointment";
             $message = 'Student name: ' . $res[0]->first_name . ' ' . $res[0]->last_name . ', ASU ID: ' . $res[0]->asu_id . ', Email: ' . $res[0]->email . ' reason cancel' . $reason_cancel . ', day ' . $res[0]->date . ' from : ' . $res[0]->start_time . ' to: ' . $res[0]->finish_time;
 
-            Mail::to($student_email)->send(new SendMail($subject, $message));
-            Mail::to($advisor_email)->send(new SendMail($subject, $message));
+            Mail::to($student_email)->send(new CancelMail($subject, $message));
+            Mail::to($advisor_email)->send(new CancelMail($subject, $message));
         }
 
         return 200;

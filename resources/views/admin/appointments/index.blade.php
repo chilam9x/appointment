@@ -329,7 +329,7 @@
             var Id = $('#sltCategory').val();
             $.ajax({
                 type: "GET",
-                url: '../search-category-advisor/',
+                url: '../ajax/search-category-advisor/',
                 data: {
                     id: Id
                 },

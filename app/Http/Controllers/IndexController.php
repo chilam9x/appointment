@@ -99,13 +99,4 @@ class IndexController extends Controller
             return $ex;
         }
     }
-    public function getAppointment(Request $request)
-    {
-        try {
-            $res = Appointment::getAppointment($request->id);
-            return $res;
-        } catch (\Exception $ex) {
-            return $ex;
-        }
-    }
 }

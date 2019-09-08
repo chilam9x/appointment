@@ -25,7 +25,7 @@
                     </div>
                     <div class="panel-body">
                         <div class="col-sm-12">
-                            <form class="form-inline" action="{{url('search-appointment')}}" method="POSt">
+                            <form class="form-inline" action="{{url('search-appointment')}}" method="POST">
                                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                                 <div class="form-group">
                                     <label for="pwd">Category:</label>
@@ -217,7 +217,7 @@
                 var Id = $('#sltCategory').val();
                 $.ajax({
                     type: "GET",
-                    url: 'search-category-advisor',
+                    url: 'ajax/search-category-advisor',
                     data: {
                         id: Id
                     },
