@@ -55,21 +55,23 @@ class IndexController extends Controller
     public function cancelAppointment()
     {
         $student = null;
+        $asu_id=null;
         $error_code = 0;
         $success = 0;
-        return view('user.cancel-appointment', compact('student', 'error_code','success'));
+        return view('user.cancel-appointment', compact('student', 'error_code','success','asu_id'));
     }
     public function checkStudent(Request $request)
     {
         try {
+            $asu_id=$request->asu_id;
             $student = Student::checkStudent($request);
             $success = 0;
             if ($student->count() == 0) {
                 $error_code = 5;
-                return view('user.cancel-appointment', compact('student', 'error_code','success'));
+                return view('user.cancel-appointment', compact('student', 'error_code','success','asu_id'));
             } else {
                 $error_code = 0;
-                return view('user.cancel-appointment', compact('student', 'error_code','success'));
+                return view('user.cancel-appointment', compact('student', 'error_code','success','asu_id'));
             }
         } catch (\Exception $ex) {
             return $ex;

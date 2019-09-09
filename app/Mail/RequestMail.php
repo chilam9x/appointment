@@ -39,6 +39,6 @@ class RequestMail extends Mailable
             'name' => 'Cancel Request',
             'link' => 'https://apm.taybol.com/cancel-appointment'
         ])
-        ->view('email.request-email',compact("e_message"));
+        ->markdown('email.request-email',compact("e_message"));
     }
 }

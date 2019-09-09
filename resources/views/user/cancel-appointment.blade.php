@@ -8,13 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12 ">
-                <span class="bg-success text-center" id="noti-success" style="display:none">  You have successfully cancelled an appointment </span>
-                @if (Session::has('fail'))
-                <span class="bg-danger"> {{ Session::get('fail') }}</span>
-                @endif
-                @if (Session::has('success'))
-                <span class="bg-success"> {{ Session::get('success') }}</span>
-                @endif
+                <span class="bg-success text-center" id="noti-success" style="display:none"> You have successfully cancelled an appointment </span>
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h5>Student infomation</h5>
@@ -26,8 +20,7 @@
                                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                                     <div class="form-group">
                                         <label for="focusedInput">* ASU ID #: </label>
-                                        <input class="form-control" name="asu_id" type="text"
-                                            placeholder="Enter ASU ID">
+                                        <input class="form-control" name="asu_id" value="{{$asu_id}}" type="text"  placeholder="Enter ASU ID">
                                         <button type="submit" class="btn  btn-warning">Check</button>
                                     </div>
                                 </form>
@@ -58,8 +51,7 @@
                                             <td>{{($s->phone_call==1) ? 'yes' :''}}</td>
                                             <td>{{date("d-m-Y", strtotime($s->ap_created_at))}}</td>
                                             @if($s->cancel_at==null)
-                                            <td><a href="#" data-toggle="modal" data-target="#cancel"
-                                                    onclick="openCancelModal({{$s->id}},{{$s->apm_id}})">Cancel</a> </td>
+                                            <td><a href="#" data-toggle="modal" data-target="#cancel" onclick="openCancelModal({{$s->id}},{{$s->apm_id}})">Cancel</a> </td>
                                             @else
                                             <td></td>
                                             @endif
@@ -93,8 +85,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="focusedInput">* Reason cancel: </label> <span id="error" class="text-danger"></span>
-                        <textarea class="form-control" id="reason_cancel" name="reason_cancel" type="text" rows="5"
-                            required></textarea>
+                        <textarea class="form-control" id="reason_cancel" name="reason_cancel" type="text" rows="5" required></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -123,23 +114,23 @@
     </div>
 </div>
 @if( $error_code == 5)
-    <script>
+<script>
     $(function() {
         $('#myModal').modal('show');
     });
-    </script>
+</script>
 @endif
 @if( $success == 1)
-    <script>
-        $(function() {
-            $('#noti-success').css("display", "block");
-        });
-    </script>
+<script>
+    $(function() {
+        $('#noti-success').css("display", "block");
+    });
+</script>
 @endif
 <script>
-function openCancelModal(student_id,appointment_id) {
-    $('#student_id').val(student_id);
-    $('#appointment_id').val(appointment_id);
-}
+    function openCancelModal(student_id, appointment_id) {
+        $('#student_id').val(student_id);
+        $('#appointment_id').val(appointment_id);
+    }
 </script>
 @endsection
