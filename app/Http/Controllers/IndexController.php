@@ -82,10 +82,11 @@ class IndexController extends Controller
         try {
             $res = Appointment::cancel($request);
             $error_code = 0;
+            $asu_id=null;
             $success = 1;
             if ($res == 200) {
                 $student = null;
-                return view('user.cancel-appointment', compact('student', 'error_code','success'));
+                return view('user.cancel-appointment', compact('student', 'error_code','success','asu_id'));
             }
         } catch (\Exception $ex) {
             return $ex;
